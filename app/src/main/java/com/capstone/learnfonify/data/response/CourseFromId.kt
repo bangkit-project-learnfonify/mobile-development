@@ -2,10 +2,10 @@ package com.capstone.learnfonify.data.response
 
 import com.google.gson.annotations.SerializedName
 
-data class CourseFromCategory(
+data class CourseFromId(
 
 	@field:SerializedName("data")
-	val data: List<CourseItem> ,
+	val data: List<DetailCourseItem?>? = null,
 
 	@field:SerializedName("statusText")
 	val statusText: String? = null,
@@ -20,28 +20,28 @@ data class CourseFromCategory(
 	val status: Int? = null
 )
 
-data class CourseItem(
+data class DetailCourseItem(
 
 	@field:SerializedName("image")
 	val image: String? = null,
 
 	@field:SerializedName("instructor")
-	val instructor: Any? = null,
+	val instructor: String? = null,
 
 	@field:SerializedName("level")
-	val level: String? = null,
+	val level: Any? = null,
 
 	@field:SerializedName("organizer")
 	val organizer: String? = null,
 
 	@field:SerializedName("fee")
-	val fee: Any? = null,
+	val fee: String? = null,
 
 	@field:SerializedName("link")
 	val link: String? = null,
 
 	@field:SerializedName("rating")
-	val rating: Any? = null,
+	val rating: String? = null,
 
 	@field:SerializedName("created_at")
 	val createdAt: String? = null,

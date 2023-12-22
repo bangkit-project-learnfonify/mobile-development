@@ -1,14 +1,17 @@
 package com.capstone.learnfonify.ui.pages.home
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,14 +19,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.FloatingActionButtonElevation
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -32,6 +43,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -46,6 +58,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.capstone.learnfonify.R
 import com.capstone.learnfonify.constants.DummyListMenu
 import com.capstone.learnfonify.data.ViewModelFactory
@@ -62,54 +75,80 @@ fun HomePage
              homeViewModel: HomeViewModel = viewModel(
                  factory = ViewModelFactory(Injection.provideRepository())
              ),
+             username: String,
+             urlProfile: String,
+             onNagivateToDetail: (Int) -> Unit
 ) {
-    HomeContent(homeViewModel = homeViewModel)
-
+    HomeContent(
+        homeViewModel = homeViewModel,
+        username = username,
+        urlProfile = urlProfile,
+        onNagivateToDetail =  onNagivateToDetail)
 }
 
 @Composable
 fun HomeContent(modifier: Modifier = Modifier,
                 homeViewModel: HomeViewModel,
+                username: String,
+                urlProfile: String,
+                onNagivateToDetail: (Int) -> Unit
 ) {
    Column(
        modifier = Modifier
-           .padding(16.dp)
+           .padding(16.dp, top = 16.dp, bottom = 0.dp)
            .fillMaxWidth()
            .verticalScroll(rememberScrollState())
    ) {
-       Row(
-           Modifier.fillMaxWidth(),
-           horizontalArrangement = Arrangement.Center
+
+       Box(
+           modifier = Modifier
+               .fillMaxWidth()
        ) {
-           Text(text = "Learn",
-               style = MaterialTheme.typography.headlineSmall.copy(
-                   fontWeight = FontWeight.Bold,
-               ),
+           Row(
+               modifier = Modifier
+                   .fillMaxWidth()
+                   .padding(end = 16.dp),
+               horizontalArrangement = Arrangement.End
+           ){
+               ProfileButton(urlProfile)
+           }
+
+           Row(
+               Modifier.fillMaxWidth(),
+               horizontalArrangement = Arrangement.Center
            )
-           Text(text = "Fonify",
-               style = MaterialTheme.typography.headlineSmall.copy(
-                   fontWeight = FontWeight.Bold,
-                   color = Color.Cyan
-               ),
-           )
+           {
+
+               Text(text = "Learn",
+                   style = MaterialTheme.typography.headlineSmall.copy(
+                       fontWeight = FontWeight.Bold,
+                   ),
+               )
+               Text(text = "Fonify",
+                   style = MaterialTheme.typography.headlineSmall.copy(
+                       fontWeight = FontWeight.Bold,
+                       color = Color.Cyan
+                   ),
+               )
+           }
        }
+
        Text(
-           text = "Selamat pagi, Anna!",
-           style = MaterialTheme.typography.labelSmall.copy(
+           text = "Selamat pagi, $username!",
+           style = MaterialTheme.typography.labelMedium.copy(
                fontWeight = FontWeight.Normal,
                textAlign = TextAlign.Center,
                color = Color.Black
            ),
            modifier = Modifier
                .fillMaxWidth()
-               .padding(top = 6.dp)
        )
 
        Image(painter = painterResource(R.drawable.carousel)
            , contentDescription = stringResource(R.string.setting),
            modifier = Modifier
                .fillMaxWidth()
-               .padding(top = 20.dp),
+               .padding(top = 20.dp, end = 16.dp),
            contentScale = ContentScale.Crop,
        )
 
@@ -168,12 +207,14 @@ fun HomeContent(modifier: Modifier = Modifier,
                is UiState.Loading -> {
                    homeViewModel.getCoursesFromCategory()
                    Box(modifier =
-                   Modifier.fillMaxHeight()
+                   Modifier
+                       .fillMaxHeight()
                        .defaultMinSize(400.dp),
                        contentAlignment = Alignment.Center
                    ){
                        LinearProgressIndicator(
-                           modifier = Modifier.width(120.dp)
+                           modifier = Modifier
+                               .width(120.dp)
                                .padding(top = 24.dp),
                            color = MaterialTheme.colorScheme.secondary,
                        )
@@ -181,39 +222,67 @@ fun HomeContent(modifier: Modifier = Modifier,
 
                }
                is UiState.Success -> {
-                   uiState.data.map {
-                       MyListCourse(
-                           courses = it,
-                           modifier = Modifier
-                               .padding(top = 24.dp)
-                           )
+                   LazyColumn(){
+                       items(uiState.data, key = {}){
+                           MyListCourse(
+                            courses = it,
+                            modifier = Modifier
+                                .padding(top = 24.dp),
+                            onNagivateToDetail = onNagivateToDetail
+                        )
+                       }
                    }
+
+//                    uiState.data.map {
+//                        MyListCourse(
+//                            courses = it,
+//                            modifier = Modifier
+//                                .padding(top = 24.dp),
+//                            onNagivateToDetail = onNagivateToDetail
+//                        )
+//                    }
+
+
+
+
                    }
 
                is UiState.Error -> {
-
+                   Text(text = "Error when get data",
+                       style = MaterialTheme.typography.headlineSmall.copy(
+                           fontWeight = FontWeight.Normal,
+                           textAlign = TextAlign.Center
+                       ),
+                       modifier = Modifier
+                           .fillMaxWidth()
+                           .padding(top = 24.dp)
+                   )
                }
            }
        }
+       Spacer(modifier = modifier
+           .fillMaxWidth()
+           .height(24.dp))
 
    }
 
 }
 
-//@Preview(showBackground = true, device = Devices.PIXEL_4)
-//@Composable
-//fun HomeContentPreview() {
-//    LearnfonifyTheme {
-//        HomeContent()
-//    }
-//}
+@Preview(showBackground = true, device = Devices.PIXEL_4)
+@Composable
+fun HomeContentPreview() {
+    LearnfonifyTheme {
+        HomePage(username = "Joni", urlProfile = "", onNagivateToDetail = {})
+    }
+}
 
 
 @Composable
 fun MyListCourse(
     modifier: Modifier = Modifier
         .padding(top = 24.dp),
-    courses: List<CourseItem>
+    courses: List<CourseItem>,
+    onNagivateToDetail: (Int) -> Unit
 ) {
 
     Column(
@@ -236,7 +305,8 @@ fun MyListCourse(
             ),
         ) {
 
-            items(courses, key = { it.id!!}) {course ->
+            items(courses, key = { it.id}) {course ->
+
                 Box(
                     modifier = Modifier
                         .shadow(
@@ -246,7 +316,8 @@ fun MyListCourse(
                         .clip(RoundedCornerShape(24.dp))
                         .background(Color.White)
                         .size(196.dp)
-                        .padding(12.dp),
+                        .padding(12.dp)
+                        .clickable { onNagivateToDetail(course.id) },
                 ) {
                     Column(
                         modifier = Modifier.fillMaxWidth(),
@@ -281,8 +352,7 @@ fun MyListCourse(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .fillMaxHeight()
-                                .padding(top = 8.dp),
+                                .fillMaxHeight(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.Bottom
                         ) {
@@ -317,3 +387,17 @@ fun MyListCourse(
 
 }
 
+
+
+@Composable
+fun ProfileButton(url: String) {
+
+        AsyncImage(model = url,
+            contentDescription = "Profile",
+            error = painterResource(R.drawable.google),
+            modifier = Modifier
+                .size(38.dp)
+                .clip(CircleShape)
+            )
+
+}

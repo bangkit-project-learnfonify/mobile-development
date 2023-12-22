@@ -27,13 +27,18 @@ class HomeViewModel(
         viewModelScope.launch {
             val listCategory = courseRepository.getListCategory()
             listCategory.map {
-                courseRepository.getCoursesFromCategory(it.category!!)
+                courseRepository.getCoursesFromCategory(it.category)
                     .catch {
                         _uiState.value = UiState.Error(it.message.toString())
                     }
                     .collect{courses ->
-                        listAllCourse.add(courses)
-                        if (it.category == listCategory[listCategory.lastIndex].category)  _uiState.value = UiState.Success(listAllCourse!!)
+                        if(courses != null){
+                            listAllCourse.add(courses)
+                            if (courses[0].category == listCategory[listCategory.lastIndex].category)  _uiState.value = UiState.Success(listAllCourse!!)
+                        }else{
+                            _uiState.value = UiState.Error("data is null")
+                        }
+
                     }
 
             }

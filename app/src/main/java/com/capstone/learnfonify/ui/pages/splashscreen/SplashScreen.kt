@@ -124,18 +124,6 @@ fun LearnFornifySplashScreen(
                 }
 
 
-//                Image(
-//                    painter = painterResource(R.drawable.login),
-//                    contentDescription = null,
-//                    modifier = Modifier
-//                        .size(475.dp)
-//                        .padding(top = 24.dp)
-//                        .graphicsLayer {
-//                            this.translationX = -100.dp.toPx()
-//                        },
-//
-//
-//                    )
 
                 shareImage()
 
