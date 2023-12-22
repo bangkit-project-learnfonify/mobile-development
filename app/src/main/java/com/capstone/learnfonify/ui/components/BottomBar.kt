@@ -1,6 +1,7 @@
 package com.capstone.learnfonify.ui.components
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChatBubble
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Person
@@ -44,6 +45,11 @@ fun BottomBar(
                 title = stringResource(R.string.menu_stored),
                 icon = Icons.Default.List,
                 screen = Screen.Saved
+            ),
+            NavigationItem(
+                title = stringResource(R.string.menu_community),
+                icon = Icons.Default.ChatBubble,
+                screen = Screen.Community
             ),
             NavigationItem(
                 title = stringResource(R.string.menu_profile),

@@ -49,6 +49,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -140,7 +141,7 @@ fun HomeContent(
                     text = "Fonify",
                     style = MaterialTheme.typography.headlineSmall.copy(
                         fontWeight = FontWeight.Bold,
-                        color = Color.Cyan
+                        color = colorResource(id = R.color.learnfornify_blue)
                     ),
                 )
             }
@@ -180,7 +181,7 @@ fun HomeContent(
                 if (it.id != 2) {
                     OutlinedButton(
                         onClick = { /*TODO*/ },
-                        border = BorderStroke(2.dp, Color.Cyan),
+                        border = BorderStroke(2.dp, colorResource(id = R.color.learnfornify_blue)),
                         modifier = Modifier.defaultMinSize(minWidth = 50.dp)
                     ) {
 
@@ -193,14 +194,13 @@ fun HomeContent(
                             )
                         )
 
-
                     }
                 } else {
                     Button(
                         onClick = { /*TODO*/ },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Cyan,
-                            contentColor = Color.Black
+                            containerColor = colorResource(id = R.color.learnfornify_blue),
+                            contentColor = Color.White
                         )
                     ) {
                         Text(

@@ -2,6 +2,7 @@ package com.capstone.learnfonify.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,6 +34,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -76,9 +78,7 @@ fun MyListCourse(
                 },
                 shape = RoundedCornerShape(12.dp),
                 contentPadding = PaddingValues(10.dp),
-                colors = ButtonDefaults.buttonColors(
-
-                ),
+                colors = ButtonDefaults.buttonColors(containerColor =colorResource(id = R.color.learnfornify_blue) ),
                 modifier = Modifier
                     .clipToBounds()
                     .padding(horizontal = 16.dp),
@@ -186,11 +186,21 @@ fun MyListCourse(
                                 Text(
                                     text = course.fee.toString(),
                                     style = MaterialTheme.typography.labelSmall.copy(
-                                        fontWeight = FontWeight.Light,
-                                        textAlign = TextAlign.Start
+                                        fontWeight = FontWeight.Normal,
+                                        textAlign = TextAlign.Center,
+                                        color = Color.White
                                     ),
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .background(colorResource(id = R.color.learnfornify_teal))
+                                        .border(
+                                            1.dp,
+                                            Color.Black
+                                        )
+                                        .padding(horizontal = 4.dp, vertical = 2.dp), //
+                                )
 
-                                    )
+
                             }
 
                         }

@@ -46,6 +46,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -155,259 +156,281 @@ fun CourseDetailContent(
         mutableStateOf(false)
     }
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .then(
-                if (!isDisplayModal) {
-                    Modifier.verticalScroll(rememberScrollState())
-                } else {
-                    Modifier.blur(radius = 8.dp)
-                }
-            ),
-
-        ) {
-        Box(
+            .fillMaxHeight(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .zIndex(1f),
-            contentAlignment = Alignment.Center
+                .padding(bottom = 56.dp)
+                .then(
+                    if (!isDisplayModal) {
+                        Modifier.verticalScroll(rememberScrollState())
+                    } else {
+                        Modifier.blur(radius = 8.dp)
+                    }
+                ),
 
-        ) {
-            AsyncImage(
-                model = course.image,
-                contentDescription = course.title,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(356.dp)
-                    .blur(radius = 8.dp),
-
-                )
-            AsyncImage(
-                model = course.image,
-                contentDescription = course.title,
-                modifier = Modifier
-                    .size(286.dp),
-            )
-
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-                .graphicsLayer {
-                    this.translationY = -32.dp.toPx()
-                }
-                .zIndex(5f)
-
-        ) {
+            ) {
             Box(
                 modifier = Modifier
-                    .shadow(
-                        elevation = 10.dp,
-                        shape = RoundedCornerShape(6.dp)
-                    )
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(24.dp))
-                    .background(Color.White)
-                    .padding(8.dp),
+                    .fillMaxHeight()
+                    .zIndex(1f),
+                contentAlignment = Alignment.Center
+
             ) {
-                Column(
-                    Modifier
+                AsyncImage(
+                    model = course.image,
+                    contentDescription = course.title,
+                    modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-
-
-                    Text(
-                        text = course.title.toString(),
-                        style = MaterialTheme.typography.headlineSmall.copy(
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
-                        ),
-                    )
-                    Text(
-                        text = course.category.toString(),
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            fontWeight = FontWeight.Normal,
-                            textAlign = TextAlign.Center
-                        ),
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(Color.Cyan) // Set background color
-                            .border(2.dp, Color.LightGray) // Set border with thickness and color
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                        .height(356.dp)
+                        .blur(radius = 8.dp),
 
                     )
-                    if (!course.rating.isNullOrEmpty()) {
-                        RatingBar(
-                            onRatingChange = {
-                            },
-                            rating = course.rating.toDouble(),
-                            starsColor = Color.Black
-                        )
+                AsyncImage(
+                    model = course.image,
+                    contentDescription = course.title,
+                    modifier = Modifier
+                        .size(286.dp),
+                )
+
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                    .graphicsLayer {
+                        this.translationY = -32.dp.toPx()
                     }
+                    .zIndex(5f)
 
-
-                    Row(
-                        modifier = Modifier
+            ) {
+                Box(
+                    modifier = Modifier
+                        .shadow(
+                            elevation = 10.dp,
+                            shape = RoundedCornerShape(6.dp)
+                        )
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(24.dp))
+                        .background(Color.White)
+                        .padding(8.dp),
+                ) {
+                    Column(
+                        Modifier
                             .fillMaxWidth()
-                            .padding(top = 32.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            .padding(horizontal = 24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        if (!course.fee.isNullOrEmpty()) {
-                            Text(
-                                text = course.fee.toString(),
-                                style = MaterialTheme.typography.labelSmall.copy(
-                                    fontWeight = FontWeight.Normal,
-                                    textAlign = TextAlign.Center,
-                                    color = Color.White
-                                ),
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(16.dp))
-                                    .background(Color.Magenta) // Set background color
-                                    .border(
-                                        1.dp,
-                                        Color.Black
-                                    ) // Set border with thickness and color
-                                    .padding(horizontal = 8.dp, vertical = 4.dp), //
-                            )
-                        }
+
 
                         Text(
-                            text = "Kursus",
+                            text = course.title.toString(),
+                            style = MaterialTheme.typography.headlineSmall.copy(
+                                fontWeight = FontWeight.Bold,
+                                textAlign = TextAlign.Center
+                            ),
+                        )
+                        Text(
+                            text = course.category.toString(),
                             style = MaterialTheme.typography.labelSmall.copy(
                                 fontWeight = FontWeight.Normal,
                                 textAlign = TextAlign.Center
                             ),
                             modifier = Modifier
                                 .clip(RoundedCornerShape(16.dp))
-                                .background(Color.Transparent) // Set background color
+                                .background(colorResource(id = R.color.blue_light))
                                 .border(
-                                    1.dp,
-                                    Color.LightGray
-                                ) // Set border with thickness and color
-                                .padding(horizontal = 8.dp, vertical = 4.dp), //
+                                    2.dp,
+                                    colorResource(id = R.color.learnfornify_blue)
+                                )
+                                .padding(horizontal = 8.dp, vertical = 4.dp)
+
                         )
-                    }
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 10.dp)
-                            .height(1.dp)
-                            .background(Color.Gray)
-                    )
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = course.organizer.toString(),
-                            style = MaterialTheme.typography.labelMedium.copy(
-                                fontWeight = FontWeight.SemiBold,
-                                textAlign = TextAlign.Center
+                        if (!course.rating.isNullOrEmpty()) {
+                            RatingBar(
+                                onRatingChange = {
+                                },
+                                rating = course.rating.toDouble(),
+                                starsColor = Color.Black,
+                                modifier = Modifier
+                                    .padding(top = 8.dp)
                             )
-                        )
-                        if (!course.instructor.isNullOrEmpty()) {
+                        }
+
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 32.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            if (!course.fee.isNullOrEmpty()) {
+                                Text(
+                                    text = course.fee.toString(),
+                                    style = MaterialTheme.typography.labelSmall.copy(
+                                        fontWeight = FontWeight.Normal,
+                                        textAlign = TextAlign.Center,
+                                        color = Color.White
+                                    ),
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(16.dp))
+                                        .background(colorResource(id = R.color.learnfornify_teal))
+                                        .border(
+                                            1.dp,
+                                            Color.Black
+                                        )
+                                        .padding(horizontal = 6.dp, vertical = 4.dp), //
+                                )
+                            }
+
                             Text(
-                                text = course.instructor.toString(),
-                                style = MaterialTheme.typography.labelMedium.copy(
+                                text = "Kursus",
+                                style = MaterialTheme.typography.labelSmall.copy(
                                     fontWeight = FontWeight.Normal,
+                                    textAlign = TextAlign.Center
+                                ),
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(16.dp))
+                                    .background(Color.Transparent) // Set background color
+                                    .border(
+                                        1.dp,
+                                        Color.LightGray
+                                    ) // Set border with thickness and color
+                                    .padding(horizontal = 8.dp, vertical = 4.dp), //
+                            )
+                        }
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 10.dp)
+                                .height(1.dp)
+                                .background(Color.Gray)
+                        )
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = course.organizer.toString(),
+                                style = MaterialTheme.typography.labelMedium.copy(
+                                    fontWeight = FontWeight.SemiBold,
                                     textAlign = TextAlign.Center
                                 )
                             )
+                            if (!course.instructor.isNullOrEmpty()) {
+                                Text(
+                                    text = course.instructor.toString(),
+                                    style = MaterialTheme.typography.labelMedium.copy(
+                                        fontWeight = FontWeight.Normal,
+                                        textAlign = TextAlign.Center
+                                    )
+                                )
+                            }
+
                         }
-
-                    }
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 10.dp)
-                            .height(1.dp)
-                            .background(Color.Gray)
-                    )
-                    Text(
-                        text = course.description.toString(),
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            fontWeight = FontWeight.Light,
-                            textAlign = TextAlign.Start
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 10.dp)
-                            .height(8.dp)
-                    )
-                    if (!isDoneGiveRating) {
-                        Button(
-                            onClick = {
-                                isDisplayModal = true
-                            },
-                            shape = RoundedCornerShape(12.dp),
-                            contentPadding = PaddingValues(10.dp),
-                            colors = ButtonDefaults.buttonColors(
-
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 10.dp)
+                                .height(1.dp)
+                                .background(Color.Gray)
+                        )
+                        Text(
+                            text = course.description.toString(),
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontWeight = FontWeight.Light,
+                                textAlign = TextAlign.Start
                             ),
                             modifier = Modifier
-                                .clipToBounds()
-                                .padding(bottom = 24.dp),
+                                .fillMaxWidth()
                         )
-                        {
-                            Text(
-                                text = "beri rating",
-                                style = MaterialTheme.typography.titleSmall.copy(
-                                    fontWeight = FontWeight.Bold,
-                                ),
+
+                        if (!isDoneGiveRating) {
+                            Row(
                                 modifier = Modifier
-                                    .padding(horizontal = 8.dp)
-                            )
+                                    .fillMaxWidth()
+                                    .padding(top = 16.dp),
+                                horizontalArrangement = Arrangement.Start
+                            ) {
+                                Button(
+                                    onClick = {
+                                        isDisplayModal = true
+                                    },
+                                    shape = RoundedCornerShape(12.dp),
+                                    contentPadding = PaddingValues(10.dp),
+                                    colors = ButtonDefaults.buttonColors(containerColor =colorResource(id = R.color.learnfornify_blue) ),
+                                    modifier = Modifier
+                                        .clipToBounds()
+                                        .padding(bottom = 8.dp),
+                                )
+                                {
+                                    Text(
+                                        text = "beri rating",
+                                        style = MaterialTheme.typography.titleSmall.copy(
+                                            fontWeight = FontWeight.Bold,
+                                        ),
+                                        modifier = Modifier
+                                            .padding(horizontal = 4.dp)
+                                    )
+                                }
+                            }
+
                         }
+                        var rating by remember {
+                            mutableDoubleStateOf(0.0)
+                        }
+                        if (isDisplayModal) {
+                            StarDialog(
+                                onDismissRequest = {
+                                    isDisplayModal = false
+                                },
+                                onConfirmation = {
+                                    isDisplayModal = false
+                                    isDoneGiveRating = true
+                                    detailViewModel.postRating(
+                                        userId = userId,
+                                        courseId = courseId,
+                                        userRating = rating.toInt()
+                                    )
+                                    Toast.makeText(context, "Berhasil Mengirim", Toast.LENGTH_SHORT).show()
+                                },
+                                onRatingChange = {
+                                    rating = it
+                                },
+                                rating = rating,
+                            )
+
+                        }
+
                     }
-
                 }
-            }
-        }
 
+            }
+
+
+
+
+
+        }
         DetailBar(
-            onInsertSavedCourse = onInsertSavedCourse,
-            detailViewModel = detailViewModel,
-            id = courseId,
-            onRemoveSavedCourse = onRemoveSavedCourse,
-            linkUrl = course.link.toString()
+        onInsertSavedCourse = onInsertSavedCourse,
+        detailViewModel = detailViewModel,
+        id = courseId,
+        onRemoveSavedCourse = onRemoveSavedCourse,
+        linkUrl = course.link.toString()
         )
 
-        var rating by remember {
-            mutableDoubleStateOf(0.0)
-        }
-        if (isDisplayModal) {
-            StarDialog(
-                onDismissRequest = {
-                    isDisplayModal = false
-                },
-                onConfirmation = {
-                    isDisplayModal = false
-                    isDoneGiveRating = true
-                    detailViewModel.postRating(
-                        userId = userId,
-                        courseId = courseId,
-                        userRating = rating.toInt()
-                    )
-                    Toast.makeText(context, "Berhasil Mengirim", Toast.LENGTH_SHORT).show()
-                },
-                onRatingChange = {
-                    rating = it
-                },
-                rating = rating,
-            )
 
-        }
 
     }
+
 }
 
 //@Preview(showBackground = true, device = Devices.PIXEL_4)
@@ -418,3 +441,4 @@ fun CourseDetailContent(
 //    }
 //}
 
+//

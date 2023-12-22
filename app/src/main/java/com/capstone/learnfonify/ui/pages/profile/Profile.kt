@@ -85,7 +85,6 @@ fun ProfilePage(
             }
 
             is UiState.Success -> {
-                Log.d("USERRRRR", uiState.data.toString())
                 ProfileContent(
                     onSignOut = {
 
@@ -168,87 +167,90 @@ fun ProfileContent(
             )
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-        ) {
-            Text(
-                text = "Informasi",
-                style = MaterialTheme.typography.headlineSmall.copy(
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Start
-                ),
+        if(userItem.age != null && userItem.majoring != null) {
+            Column(
                 modifier = Modifier
-                    .padding(bottom = 16.dp)
-            )
-
-            if (userItem.age != null) {
-                Row(
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            ) {
+                Text(
+                    text = "Informasi",
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Start
+                    ),
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Person4,
-                        contentDescription = "umur",
-                        modifier = Modifier
-                            .size(34.dp)
-                            .padding(end = 8.dp)
-                    )
-                    Text(
-                        text = userItem.age.toString() + " tahun",
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontWeight = FontWeight.Normal,
-                            textAlign = TextAlign.Start
-                        ),
-                        modifier = Modifier
-                            .weight(1f)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(Color.Transparent) // Set background color
-                            .border(
-                                2.dp,
-                                Color.Black
-                            ) // Set border with thickness and color
-                            .padding(horizontal = 8.dp, vertical = 8.dp), //
-                    )
-                }
-            }
+                        .padding(bottom = 16.dp)
+                )
 
-            if (userItem.majoring != null) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.BookOnline,
-                        contentDescription = "logout",
+                if (userItem.age != null) {
+                    Row(
                         modifier = Modifier
-                            .size(34.dp)
-                            .padding(end = 8.dp)
-                    )
-                    Text(
-                        text = userItem.majoring.toString(),
-                        style = MaterialTheme.typography.titleSmall.copy(
-                            fontWeight = FontWeight.Normal,
-                            textAlign = TextAlign.Start
-                        ),
-                        modifier = Modifier
-                            .weight(1f)
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(Color.Transparent) // Set background color
-                            .border(
-                                2.dp,
-                                Color.Black
-                            ) // Set border with thickness and color
-                            .padding(horizontal = 8.dp, vertical = 8.dp), //
-                    )
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Person4,
+                            contentDescription = "umur",
+                            modifier = Modifier
+                                .size(34.dp)
+                                .padding(end = 8.dp)
+                        )
+                        Text(
+                            text = userItem.age.toString() + " tahun",
+                            style = MaterialTheme.typography.titleSmall.copy(
+                                fontWeight = FontWeight.Normal,
+                                textAlign = TextAlign.Start
+                            ),
+                            modifier = Modifier
+                                .weight(1f)
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(Color.Transparent) // Set background color
+                                .border(
+                                    2.dp,
+                                    Color.Black
+                                ) // Set border with thickness and color
+                                .padding(horizontal = 8.dp, vertical = 8.dp), //
+                        )
+                    }
                 }
-            }
 
+                if (userItem.majoring != null) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.BookOnline,
+                            contentDescription = "logout",
+                            modifier = Modifier
+                                .size(34.dp)
+                                .padding(end = 8.dp)
+                        )
+                        Text(
+                            text = userItem.majoring.toString(),
+                            style = MaterialTheme.typography.titleSmall.copy(
+                                fontWeight = FontWeight.Normal,
+                                textAlign = TextAlign.Start
+                            ),
+                            modifier = Modifier
+                                .weight(1f)
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(Color.Transparent) // Set background color
+                                .border(
+                                    2.dp,
+                                    Color.Black
+                                ) // Set border with thickness and color
+                                .padding(horizontal = 8.dp, vertical = 8.dp), //
+                        )
+                    }
+                }
+
+            }
         }
+
 
     }
 //

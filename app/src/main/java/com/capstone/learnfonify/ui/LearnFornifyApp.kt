@@ -34,6 +34,7 @@ import androidx.navigation.navArgument
 import com.capstone.learnfonify.data.ViewModelFactory
 import com.capstone.learnfonify.ui.components.BottomBar
 import com.capstone.learnfonify.ui.components.DetailBar
+import com.capstone.learnfonify.ui.pages.community.CommunityPage
 import com.capstone.learnfonify.ui.pages.coursedetail.CourseDetailPage
 import com.capstone.learnfonify.ui.pages.more.MoreContent
 import com.capstone.learnfonify.ui.pages.more.MorePage
@@ -104,6 +105,10 @@ fun LearnFornifyApp(
                         navController.navigate(Screen.DetailCourse.createRoute(id))
                     }
                 )
+            }
+
+            composable(Screen.Community.route){
+                CommunityPage()
             }
 
             composable(

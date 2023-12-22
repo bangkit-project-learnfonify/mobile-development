@@ -8,4 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="primary_blue">#55B8D9</color>
+    <color name="learnfornify_blue">#27BFF2</color>
+    <color name="learnfornify_teal">#19A598</color>
+    <color name="blue_light">#CBECF8</color>
+    <color name="gray_light">#6D6D6D</color>
+    <color name="learnfornify_pink">#6D6D6D</color>
 </resources>

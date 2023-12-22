@@ -50,6 +50,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Devices
@@ -102,15 +103,27 @@ fun LoginContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         shareElement()
-        Text(
-            text = "LearnFonify",
-            style = MaterialTheme.typography.headlineSmall.copy(
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-        )
+        Row (
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                text = "Learn",
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    color = Color.Black
+                ),
+            )
+            Text(
+                text = "Fonify",
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    color = colorResource(id = R.color.learnfornify_blue)
+                ),
+            )
+        }
+       
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -142,7 +155,8 @@ fun LoginContent(
                 modifier = Modifier
                     .fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = colorResource(id = R.color.blue_light),
+                    focusedBorderColor = colorResource(id = R.color.learnfornify_blue)
                 ),
 
 
@@ -180,7 +194,8 @@ fun LoginContent(
                 modifier = Modifier
                     .fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = colorResource(id = R.color.blue_light),
+                    focusedBorderColor = colorResource(id = R.color.learnfornify_blue)
                 ),
                 visualTransformation = if (passwordValue.trim()
                         .equals("")
@@ -195,9 +210,7 @@ fun LoginContent(
             },
             shape = RoundedCornerShape(12.dp),
             contentPadding = PaddingValues(10.dp),
-            colors = ButtonDefaults.buttonColors(
-
-            ),
+            colors = ButtonDefaults.buttonColors(containerColor =colorResource(id = R.color.learnfornify_blue) ),
             modifier = Modifier
                 .padding(vertical = 20.dp, horizontal = 20.dp)
                 .fillMaxWidth()
@@ -227,14 +240,7 @@ fun LoginContent(
         )
 
 
-        Text(
-            text = "or Continue With",
-            style = MaterialTheme.typography.labelMedium.copy(
-                fontWeight = FontWeight.Normal,
-            ),
-            modifier = Modifier
-                .padding(top = 24.dp)
-        )
+
 
         Spacer(
             modifier = Modifier

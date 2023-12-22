@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -109,7 +110,7 @@ fun LearnFornifySplashScreen(
                             Text(
                                 text = "Fonify",
                                 style = MaterialTheme.typography.displayLarge.copy(
-                                    fontWeight = FontWeight.Bold, color = Color.Cyan
+                                    fontWeight = FontWeight.Bold, color = colorResource(id = R.color.learnfornify_blue)
                                 ),
                             )
                         }
@@ -146,12 +147,11 @@ fun LearnFornifySplashScreen(
                         },
                         shape = RoundedCornerShape(12.dp),
                         contentPadding = PaddingValues(10.dp),
-                        colors = ButtonDefaults.buttonColors(
-
-                        ),
+                        colors = ButtonDefaults.buttonColors(containerColor =colorResource(id = R.color.learnfornify_blue) ),
                         modifier = Modifier
                             .clipToBounds()
-                            .padding(bottom = 24.dp),
+                            .padding(bottom = 24.dp)
+                            ,
                     ) {
                         Text(
                             text = "Join Us", style = MaterialTheme.typography.titleSmall.copy(

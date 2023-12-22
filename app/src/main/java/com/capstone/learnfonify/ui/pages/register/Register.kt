@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -35,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -81,13 +83,26 @@ fun RegisterContent(
             modifier = Modifier.size(200.dp),
             contentScale = ContentScale.Crop
         )
-        Text(
-            text = "LearnFonify", style = MaterialTheme.typography.headlineSmall.copy(
-                fontWeight = FontWeight.Bold, textAlign = TextAlign.Center
-            ), modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
-        )
+        Row (
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(
+                text = "Learn",
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    color = Color.Black
+                ),
+            )
+            Text(
+                text = "Fonify",
+                style = MaterialTheme.typography.headlineSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    color = colorResource(id = R.color.learnfornify_blue)
+                ),
+            )
+        }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -116,7 +131,8 @@ fun RegisterContent(
                 shape = RoundedCornerShape(20.dp),
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = colorResource(id = R.color.blue_light),
+                    focusedBorderColor = colorResource(id = R.color.learnfornify_blue)
                 ),
 
 
@@ -150,7 +166,8 @@ fun RegisterContent(
                 shape = RoundedCornerShape(20.dp),
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = colorResource(id = R.color.blue_light),
+                    focusedBorderColor = colorResource(id = R.color.learnfornify_blue)
                 ),
 
 
@@ -185,7 +202,8 @@ fun RegisterContent(
                 shape = RoundedCornerShape(20.dp),
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = colorResource(id = R.color.blue_light),
+                    focusedBorderColor = colorResource(id = R.color.learnfornify_blue)
                 ),
                 visualTransformation = if (passwordValue.trim()
                         .equals("")
@@ -200,9 +218,7 @@ fun RegisterContent(
             },
             shape = RoundedCornerShape(12.dp),
             contentPadding = PaddingValues(10.dp),
-            colors = ButtonDefaults.buttonColors(
-
-            ),
+            colors = ButtonDefaults.buttonColors(containerColor =colorResource(id = R.color.learnfornify_blue) ),
             modifier = Modifier
                 .padding(vertical = 20.dp, horizontal = 20.dp)
                 .fillMaxWidth()
@@ -216,18 +232,6 @@ fun RegisterContent(
             )
         }
 
-        Text(
-            text = "or Continue With",
-            style = MaterialTheme.typography.labelMedium.copy(
-                fontWeight = FontWeight.Normal,
-            ),
-        )
-
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .size(10.dp)
-        )
 
 
 
