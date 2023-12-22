@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Learnfonify</string>
     <string name="enter_username">Register Your Username</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_stored">Stored</string>
+    <string name="menu_profile">Profile</string>
 </resources>

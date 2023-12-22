@@ -38,6 +38,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.capstone.learnfonify.R
 import com.capstone.learnfonify.ui.theme.LearnfonifyTheme
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 
 @Composable
 fun LoginPage() {
@@ -48,7 +54,12 @@ fun LoginPage() {
 @Composable
 fun LoginContent() {
 
-
+    var emailValue by remember {
+        mutableStateOf("")
+    }
+    var passwordValue by remember {
+        mutableStateOf("")
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -86,8 +97,8 @@ fun LoginContent() {
                     .padding(top = 15.dp)
             )
             OutlinedTextField(
-                value = "",
-                onValueChange = {  it},
+                value = emailValue,
+                onValueChange = {  emailValue = it},
                 label = { Text(
                     text = "Enter Your Email",
                     style = MaterialTheme.typography.titleSmall.copy(
@@ -103,6 +114,7 @@ fun LoginContent() {
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.primary,
                     ),
+
 
 
             )
@@ -122,8 +134,8 @@ fun LoginContent() {
                     .padding(top = 15.dp)
             )
             OutlinedTextField(
-                value = "",
-                onValueChange = {  it},
+                value = passwordValue,
+                onValueChange = {  passwordValue = it},
                 label = { Text(
                     text = "Enter Your Password",
                     style = MaterialTheme.typography.titleSmall.copy(
@@ -140,6 +152,7 @@ fun LoginContent() {
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.primary,
                     ),
+                visualTransformation = if (passwordValue.trim().equals("")) VisualTransformation.None else PasswordVisualTransformation()
 
 
             )
