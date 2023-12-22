@@ -14,7 +14,7 @@ data class LoginWithEmailReponse(
 	val accessToken: String? = null,
 
 	@field:SerializedName("userId")
-	val userId: Int? = null,
+	val userId: Int,
 
 	@field:SerializedName("email")
 	val email: String? = null,

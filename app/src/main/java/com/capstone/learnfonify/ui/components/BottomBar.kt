@@ -44,7 +44,7 @@ fun BottomBar(
             NavigationItem(
                 title = stringResource(R.string.menu_stored),
                 icon = Icons.Default.List,
-                screen = Screen.Stored
+                screen = Screen.Saved
             ),
             NavigationItem(
                 title = stringResource(R.string.menu_profile),

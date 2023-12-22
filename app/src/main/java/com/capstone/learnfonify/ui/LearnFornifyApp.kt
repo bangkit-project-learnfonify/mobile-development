@@ -1,84 +1,42 @@
 package com.capstone.learnfonify.ui
 
-import android.app.Activity.RESULT_OK
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.capstone.learnfonify.R
-import com.capstone.learnfonify.ui.navigation.NavigationItem
 import com.capstone.learnfonify.ui.navigation.Screen
 import com.capstone.learnfonify.ui.pages.home.HomePage
 import com.capstone.learnfonify.ui.pages.profile.ProfilePage
-import com.capstone.learnfonify.ui.pages.stored.StoredPage
+import com.capstone.learnfonify.ui.pages.saved.StoredPage
 import com.capstone.learnfonify.ui.theme.LearnfonifyTheme
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.capstone.learnfonify.data.signin.GoogleAuthUiClient
 import com.capstone.learnfonify.ui.pages.login.LoginInViewModel
 import com.capstone.learnfonify.ui.pages.register.RegisterPage
-import com.google.android.gms.auth.api.identity.Identity
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.capstone.learnfonify.data.ViewModelFactory
 import com.capstone.learnfonify.ui.components.BottomBar
 import com.capstone.learnfonify.ui.components.DetailBar
 import com.capstone.learnfonify.ui.pages.coursedetail.CourseDetailPage
-import com.capstone.learnfonify.ui.pages.login.LoginPage
 import com.capstone.learnfonify.ui.pages.register.RegisterViewModel
 import com.capstone.learnfonify.ui.pages.splashscreen.LearnFornifySplashScreen
 import com.kyy47.kyyairlines.common.UiState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -88,8 +46,8 @@ fun LearnFornifyApp(
     navController: NavHostController = rememberNavController(),
     context: Context = LocalContext.current
 ) {
-    var tokenState by remember {
-        mutableStateOf(null)
+    var isLogin by remember {
+        mutableStateOf(false)
     }
     val loginViewModel: LoginInViewModel = viewModel(factory = ViewModelFactory.getInstance(context))
 
@@ -105,7 +63,6 @@ fun LearnFornifyApp(
                     DetailBar()
                 }
                 Screen.Register.route -> {
-
                 }
 
                 else -> BottomBar(navController = navController)
@@ -115,7 +72,7 @@ fun LearnFornifyApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = if (tokenState == null) Screen.SplashLogin.route else Screen.Home.route,
+            startDestination = if (!isLogin) Screen.SplashLogin.route else Screen.Home.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Home.route) {
@@ -124,7 +81,7 @@ fun LearnFornifyApp(
                 }, context = context)
 
             }
-            composable(Screen.Stored.route) {
+            composable(Screen.Saved.route) {
                 StoredPage()
             }
             composable(
@@ -173,11 +130,12 @@ fun LearnFornifyApp(
                         }
 
                         is UiState.Success -> {
-                            LaunchedEffect(key1 =  "error"){
+                            LaunchedEffect(key1 =  "success"){
                                 if(uiState.data){
-                                    navController.navigate(Screen.Home.route)
+                                    isLogin = uiState.data
                                 }
                             }
+
                         }
 
                         is UiState.Error -> {

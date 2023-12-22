@@ -47,6 +47,10 @@ class LoginInViewModel( private val courseRepository: CourseRepository
         _loginState.value = state
     }
 
+    fun getUserIdSession() : Int{
+       return courseRepository.getUserIdSession()
+    }
+
     fun getIsAuthLogin(){
         viewModelScope.launch {
             courseRepository.getIsAuthLogin()
@@ -59,6 +63,7 @@ class LoginInViewModel( private val courseRepository: CourseRepository
         }
 
     }
+
 
     fun deleteToken(){
         viewModelScope.launch {
@@ -75,7 +80,7 @@ class LoginInViewModel( private val courseRepository: CourseRepository
                 .collect{
                     if (it.email != null){
                         _loginState.value = UiState.Success(it)
-                        courseRepository.saveSessionData(it.accessToken.toString())
+                        courseRepository.saveSessionData(it.accessToken.toString(), userId = it.userId)
                     }else{
                         _loginState.value = UiState.Error("Failed")
                     }

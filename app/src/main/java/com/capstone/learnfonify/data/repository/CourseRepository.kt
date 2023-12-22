@@ -21,12 +21,16 @@ class CourseRepository( private val apiService: ApiService, private  val pref: S
         return pref.getSessionLogin()
     }
 
-    suspend fun saveSessionData(token: String){
-        pref.saveTokenSession(token)
+    suspend fun saveSessionData(token: String, userId: Int){
+        pref.saveTokenSession(token, userId)
     }
 
     suspend fun removeSession(){
         pref.removeSession()
+    }
+
+     fun getUserIdSession() : Int{
+        return pref.getIdUser()
     }
 
 
