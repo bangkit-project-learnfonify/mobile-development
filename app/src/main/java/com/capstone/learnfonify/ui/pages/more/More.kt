@@ -44,10 +44,12 @@ fun MorePage(
     moreViewModel: MoreViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context)
     ),
-    ) {
-    MoreContent(onNavigateToDetail = onNavigateToDetail,
-        categoryCourses = categoryCourses ,
-        moreViewModel = moreViewModel)
+) {
+    MoreContent(
+        onNavigateToDetail = onNavigateToDetail,
+        categoryCourses = categoryCourses,
+        moreViewModel = moreViewModel
+    )
 
 }
 
@@ -94,8 +96,8 @@ fun MoreContent(
                     moreViewModel.getCoursesFromCategory(categoryCourses)
                     Box(
                         modifier =
-                            Modifier
-                                .fillMaxWidth()
+                        Modifier
+                            .fillMaxWidth()
                             .defaultMinSize(400.dp),
                         contentAlignment = Alignment.Center
                     ) {
@@ -116,7 +118,7 @@ fun MoreContent(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
 
-                        items(uiState.data, key ={it.id}){course ->
+                        items(uiState.data, key = { it.id }) { course ->
                             MyCardCourse(
                                 course =
                                 SavedCourseEntity(
@@ -124,7 +126,8 @@ fun MoreContent(
                                     description = course.description.toString(),
                                     titleCourse = course.title.toString(),
                                     imgUrl = course.image.toString(),
-                                ), onNagivateToDetail = onNavigateToDetail)
+                                ), onNagivateToDetail = onNavigateToDetail
+                            )
                         }
 
                     }
@@ -137,11 +140,9 @@ fun MoreContent(
         }
 
 
-
-
     }
 
-    }
+}
 
 @Preview
 @Composable

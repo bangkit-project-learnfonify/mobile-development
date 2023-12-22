@@ -55,4 +55,12 @@ interface ApiService {
         @Path("userId") userId: Int
     ): List<CourseItem>
 
+    @FormUrlEncoded
+    @POST("add-rating")
+    suspend fun postRating(
+        @Field("user_id") userId: Int,
+        @Field("course_id") courseId: Int,
+        @Field("user_rating") userRating: Int,
+    )
+
 }

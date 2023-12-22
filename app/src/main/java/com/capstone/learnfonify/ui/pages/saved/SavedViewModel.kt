@@ -13,37 +13,39 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class SavedViewModel( private val courseRepository: CourseRepository
-): ViewModel() {
+class SavedViewModel(
+    private val courseRepository: CourseRepository
+) : ViewModel() {
 
-    private val _savedCourseState: MutableStateFlow<UiState<List<SavedCourseEntity>>> = MutableStateFlow(
-        UiState.Loading)
-    val savedCourseState: StateFlow<UiState<List<SavedCourseEntity>>> get()  = _savedCourseState
+    private val _savedCourseState: MutableStateFlow<UiState<List<SavedCourseEntity>>> =
+        MutableStateFlow(
+            UiState.Loading
+        )
+    val savedCourseState: StateFlow<UiState<List<SavedCourseEntity>>> get() = _savedCourseState
 
-    fun insertToSavedCourse(course: SavedCourseEntity){
+    fun insertToSavedCourse(course: SavedCourseEntity) {
         courseRepository.insert(course)
     }
 
-    fun checkCourse(id: Int):Flow<Int>{
-       return courseRepository.checkSavedCourse(id)
+    fun checkCourse(id: Int): Flow<Int> {
+        return courseRepository.checkSavedCourse(id)
     }
 
-    fun removeCourse(id: Int){
+    fun removeCourse(id: Int) {
         courseRepository.removeSavedCourse(id)
     }
 
 
+    fun getSavedCourse() {
 
-    fun getSavedCourse(){
-
-         viewModelScope.launch{
-             courseRepository.getSavedCourse()
-                 .catch {
-                     _savedCourseState.value = UiState.Error("cannot get data")
-                 }.collect{
-                     _savedCourseState.value = UiState.Success(it)
-                 }
-         }
+        viewModelScope.launch {
+            courseRepository.getSavedCourse()
+                .catch {
+                    _savedCourseState.value = UiState.Error("cannot get data")
+                }.collect {
+                    _savedCourseState.value = UiState.Success(it)
+                }
+        }
 
     }
 }

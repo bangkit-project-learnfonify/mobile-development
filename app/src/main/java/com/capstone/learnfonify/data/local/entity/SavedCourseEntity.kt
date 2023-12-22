@@ -15,4 +15,4 @@ data class SavedCourseEntity(
     @ColumnInfo(name = "description") val description: String,
     @ColumnInfo(name = "img_url") val imgUrl: String,
 
-) : Parcelable
+    ) : Parcelable

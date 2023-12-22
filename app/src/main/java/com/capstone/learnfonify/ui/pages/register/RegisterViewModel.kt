@@ -12,30 +12,35 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class RegisterViewModel( private val courseRepository: CourseRepository
-): ViewModel() {
+class RegisterViewModel(
+    private val courseRepository: CourseRepository
+) : ViewModel() {
 
-    private val _registerState: MutableStateFlow<UiState<RegisterWithEmailResponse>> = MutableStateFlow(
-        UiState.Loading)
-    val registerState: StateFlow<UiState<RegisterWithEmailResponse>> get()  = _registerState
+    private val _registerState: MutableStateFlow<UiState<RegisterWithEmailResponse>> =
+        MutableStateFlow(
+            UiState.Loading
+        )
+    val registerState: StateFlow<UiState<RegisterWithEmailResponse>> get() = _registerState
 
 
-    fun setRegisterState(state: UiState<RegisterWithEmailResponse>){
+    fun setRegisterState(state: UiState<RegisterWithEmailResponse>) {
         _registerState.value = state
     }
 
 
-    fun registerWithEmail(username: String, email: String,
-    password: String, confirmPasswod: String){
-    viewModelScope.launch {
-        courseRepository.registerWithEmail(username, email, password, confirmPasswod)
-            .catch {
-            _registerState.value = UiState.Error("cannot post data")
-            }
-            .collect{registerResponse ->
+    fun registerWithEmail(
+        username: String, email: String,
+        password: String, confirmPasswod: String
+    ) {
+        viewModelScope.launch {
+            courseRepository.registerWithEmail(username, email, password, confirmPasswod)
+                .catch {
+                    _registerState.value = UiState.Error("cannot post data")
+                }
+                .collect { registerResponse ->
                     _registerState.value = UiState.Success(registerResponse)
 
-            }
-    }
+                }
+        }
     }
 }

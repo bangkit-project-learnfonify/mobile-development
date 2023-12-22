@@ -13,31 +13,32 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class MoreViewModel( private val courseRepository: CourseRepository
-): ViewModel()  {
+class MoreViewModel(
+    private val courseRepository: CourseRepository
+) : ViewModel() {
 
 
     private val _coursesState: MutableStateFlow<UiState<List<CourseItem>>> = MutableStateFlow(
-        UiState.Loading)
-    val coursesState: StateFlow<UiState<List<CourseItem>>> get()  = _coursesState
+        UiState.Loading
+    )
+    val coursesState: StateFlow<UiState<List<CourseItem>>> get() = _coursesState
 
 
-
-    fun getCoursesFromCategory(category: String){
+    fun getCoursesFromCategory(category: String) {
         viewModelScope.launch {
-            if(category != TOP_COURSES){
+            if (category != TOP_COURSES) {
                 courseRepository.getCoursesFromCategory(category)
                     .catch {
                         _coursesState.value = UiState.Error("cannot get courses")
-                    }.collect{
+                    }.collect {
                         _coursesState.value = UiState.Success(it)
                     }
-            }else{
+            } else {
                 val dummyIdUser = 1
                 courseRepository.getTopCourse(dummyIdUser)
                     .catch {
                         _coursesState.value = UiState.Error("cannot get courses")
-                    }.collect{
+                    }.collect {
                         _coursesState.value = UiState.Success(it)
                     }
             }
@@ -45,7 +46,7 @@ class MoreViewModel( private val courseRepository: CourseRepository
         }
     }
 
-    companion object{
-        val TOP_COURSES = "Top Courses"
+    companion object {
+        val TOP_COURSES = "Yang Mungkin Anda Sukai"
     }
 }

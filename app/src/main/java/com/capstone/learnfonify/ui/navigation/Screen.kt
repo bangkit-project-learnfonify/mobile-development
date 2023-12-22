@@ -7,10 +7,11 @@ sealed class Screen(val route: String) {
     object Profile : Screen("profile")
     object Register : Screen("register")
     object SplashLogin : Screen("splash-login")
-    object More : Screen("home/{categoryCourses}"){
+    object More : Screen("home/{categoryCourses}") {
         fun createRoute(categoryCourses: String) = "home/$categoryCourses"
     }
-    object DetailCourse : Screen("home/{courseId}"){
+
+    object DetailCourse : Screen("home/{courseId}") {
         fun createRoute(courseId: Int) = "home/$courseId"
     }
 }

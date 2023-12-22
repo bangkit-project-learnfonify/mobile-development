@@ -231,7 +231,7 @@ fun HomeContent(
                         courses = uiState.data,
                         onNagivateToDetail = onNagivateToDetail,
                         onNagivateToMore = onNagivateToMore,
-                        titleList = "Top Courses"
+                        titleList = "Yang Mungkin Anda Sukai"
                     )
                 }
 
@@ -249,7 +249,7 @@ fun HomeContent(
                     homeViewModel.getCoursesFromCategory()
                     Box(
                         modifier =
-                            Modifier
+                        Modifier
                             .fillMaxHeight()
                             .defaultMinSize(400.dp),
                         contentAlignment = Alignment.Center
@@ -300,8 +300,6 @@ fun HomeContent(
 
     }
 }
-
-
 
 
 //@Preview(showBackground = true, device = Devices.PIXEL_4)

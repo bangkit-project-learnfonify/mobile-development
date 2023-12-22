@@ -14,18 +14,19 @@ import kotlinx.coroutines.runBlocking
 
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
-class SessionPreference private constructor(private val dataStore: DataStore<Preferences>){
+
+class SessionPreference private constructor(private val dataStore: DataStore<Preferences>) {
     private val TOKEN_KEY = stringPreferencesKey("token_session")
     private val ID_USER = intPreferencesKey("id_user")
 
-     fun getSessionLogin(): Flow<Boolean> {
+    fun getSessionLogin(): Flow<Boolean> {
 
-        return dataStore.data.map { preferences->
+        return dataStore.data.map { preferences ->
             !preferences[TOKEN_KEY].equals(null)
         }
     }
 
-    suspend fun saveTokenSession( token: String, id_user: Int){
+    suspend fun saveTokenSession(token: String, id_user: Int) {
         dataStore.edit { preferences ->
             preferences[TOKEN_KEY] = token
             preferences[ID_USER] = id_user
@@ -33,28 +34,27 @@ class SessionPreference private constructor(private val dataStore: DataStore<Pre
     }
 
 
-
-     fun getIdUser(): Int{
+    fun getIdUser(): Int {
         var user_id: Int = -1
         runBlocking {
-            dataStore.edit {preferences->
+            dataStore.edit { preferences ->
                 user_id = preferences[ID_USER] ?: -1
             }
         }
         return user_id
     }
 
-    suspend fun getSessionToken(): String{
+    suspend fun getSessionToken(): String {
         var token = ""
-        dataStore.edit {preferences->
+        dataStore.edit { preferences ->
             token = preferences[TOKEN_KEY].toString() ?: ""
         }
         return token
 
     }
 
-    suspend fun removeSession(){
-        dataStore.edit {preferences->
+    suspend fun removeSession() {
+        dataStore.edit { preferences ->
             preferences.clear()
         }
     }

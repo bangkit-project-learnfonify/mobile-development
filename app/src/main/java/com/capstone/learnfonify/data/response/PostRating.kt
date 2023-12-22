@@ -2,10 +2,10 @@ package com.capstone.learnfonify.data.response
 
 import com.google.gson.annotations.SerializedName
 
-data class ListCategory(
+data class PostRating(
 
     @field:SerializedName("data")
-    val data: List<CategoryItem>,
+    val data: Any? = null,
 
     @field:SerializedName("statusText")
     val statusText: String? = null,
@@ -18,10 +18,4 @@ data class ListCategory(
 
     @field:SerializedName("status")
     val status: Int? = null
-)
-
-data class CategoryItem(
-
-    @field:SerializedName("category")
-    val category: String? = null
 )

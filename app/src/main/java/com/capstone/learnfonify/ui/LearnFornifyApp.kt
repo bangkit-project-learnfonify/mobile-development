@@ -55,7 +55,8 @@ fun LearnFornifyApp(
     var isLogin by remember {
         mutableStateOf(false)
     }
-    val loginViewModel: LoginInViewModel = viewModel(factory = ViewModelFactory.getInstance(context))
+    val loginViewModel: LoginInViewModel =
+        viewModel(factory = ViewModelFactory.getInstance(context))
 
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -67,8 +68,10 @@ fun LearnFornifyApp(
                 Screen.SplashLogin.route -> {}
                 Screen.DetailCourse.route -> {
                 }
+
                 Screen.Register.route -> {
                 }
+
                 Screen.More.route -> {
 
                 }
@@ -84,12 +87,12 @@ fun LearnFornifyApp(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Home.route) {
-                HomePage(username = "Users", urlProfile = "",
+                HomePage(username = "User", urlProfile = "",
                     onNagivateToDetail = { id ->
-                    navController.navigate(Screen.DetailCourse.createRoute(id))
+                        navController.navigate(Screen.DetailCourse.createRoute(id))
                     },
                     context = context,
-                    onNagivateToMore = {categoryCourse ->
+                    onNagivateToMore = { categoryCourse ->
                         navController.navigate(Screen.More.createRoute(categoryCourse))
                     })
 
@@ -97,36 +100,40 @@ fun LearnFornifyApp(
             composable(Screen.Saved.route) {
                 SavedPage(
                     context,
-                    onNagivateToDetail = {id ->
+                    onNagivateToDetail = { id ->
                         navController.navigate(Screen.DetailCourse.createRoute(id))
                     }
-                    )
+                )
             }
 
             composable(
                 Screen.More.route,
                 arguments = listOf(navArgument("categoryCourses") { type = NavType.StringType })
-                ){
-                var categoryCourses = it.arguments?.getString("categoryCourses") ?: "Digital Marketing"
+            ) {
+                var categoryCourses =
+                    it.arguments?.getString("categoryCourses") ?: "Digital Marketing"
 
-                    MorePage(context = context,
-                        onNavigateToDetail = {id ->
-                            navController.navigate(Screen.DetailCourse.createRoute(id))
-                        },
-                        categoryCourses = categoryCourses)
+                MorePage(
+                    context = context,
+                    onNavigateToDetail = { id ->
+                        navController.navigate(Screen.DetailCourse.createRoute(id))
+                    },
+                    categoryCourses = categoryCourses
+                )
             }
 
             composable(
                 Screen.DetailCourse.route,
                 arguments = listOf(navArgument("courseId") { type = NavType.IntType })
             ) {
+                val userId = loginViewModel.getUserIdSession()
                 val id = it.arguments?.getInt("courseId") ?: 12
-                CourseDetailPage(courseId = id, context = context)
+                CourseDetailPage(courseId = id, context = context, userId = userId)
             }
 
             composable(Screen.Profile.route) {
 
-                val userId =  loginViewModel.getUserIdSession()
+                val userId = loginViewModel.getUserIdSession()
                 ProfilePage(
                     navController = navController,
                     id = userId,
@@ -134,7 +141,6 @@ fun LearnFornifyApp(
                 )
             }
             composable(Screen.SplashLogin.route) {
-
 
 
                 loginViewModel.getIsAuthLogin()
@@ -145,8 +151,8 @@ fun LearnFornifyApp(
                         navController.navigate(Screen.Register.route)
                     },
                     onSignInClick = { /*TODO*/ },
-                    onLoginWithEmailClick = {email, password ->
-                        loginViewModel.loginWithEmail(email,password)
+                    onLoginWithEmailClick = { email, password ->
+                        loginViewModel.loginWithEmail(email, password)
                     }
                 )
 
@@ -158,8 +164,8 @@ fun LearnFornifyApp(
                         }
 
                         is UiState.Success -> {
-                            LaunchedEffect(key1 =  "success"){
-                                if(uiState.data){
+                            LaunchedEffect(key1 = "success") {
+                                if (uiState.data) {
                                     isLogin = uiState.data
                                 }
                             }
@@ -182,15 +188,15 @@ fun LearnFornifyApp(
 
                         is UiState.Success -> {
 
-                            LaunchedEffect(key1 = uiState.data.email ){
+                            LaunchedEffect(key1 = uiState.data.email) {
                                 loginViewModel.setLoginState(UiState.Loading)
                             }
                             navController.navigate(Screen.Home.route)
                         }
 
                         is UiState.Error -> {
-                            Toast.makeText(context,"Login Failed", Toast.LENGTH_SHORT).show()
-                            LaunchedEffect(key1 =  "error"){
+                            Toast.makeText(context, "Login Failed", Toast.LENGTH_SHORT).show()
+                            LaunchedEffect(key1 = "error") {
                                 loginViewModel.setLoginState(UiState.Loading)
                             }
                         }
@@ -198,14 +204,12 @@ fun LearnFornifyApp(
                 }
 
 
-
-
-
             }
             composable(Screen.Register.route) {
-                val registerViewModel: RegisterViewModel = viewModel(factory = ViewModelFactory.getInstance(context))
+                val registerViewModel: RegisterViewModel =
+                    viewModel(factory = ViewModelFactory.getInstance(context))
 
-                RegisterPage(onRegisterWithEmailClick = {username, email, password->
+                RegisterPage(onRegisterWithEmailClick = { username, email, password ->
                     registerViewModel.registerWithEmail(username, email, password, password)
                 })
 
@@ -218,16 +222,16 @@ fun LearnFornifyApp(
                         }
 
                         is UiState.Success -> {
-                            Toast.makeText(context,"Register Success", Toast.LENGTH_SHORT).show()
-                            LaunchedEffect(key1 =  "error"){
+                            Toast.makeText(context, "Register Success", Toast.LENGTH_SHORT).show()
+                            LaunchedEffect(key1 = "error") {
                                 registerViewModel.setRegisterState(UiState.Loading)
                             }
                             navController.navigate(Screen.SplashLogin.route)
                         }
 
                         is UiState.Error -> {
-                            Toast.makeText(context,"Register Failed", Toast.LENGTH_SHORT).show()
-                            LaunchedEffect(key1 =  "error"){
+                            Toast.makeText(context, "Register Failed", Toast.LENGTH_SHORT).show()
+                            LaunchedEffect(key1 = "error") {
                                 registerViewModel.setRegisterState(UiState.Loading)
                             }
                         }

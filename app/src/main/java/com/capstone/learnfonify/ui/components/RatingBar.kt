@@ -22,25 +22,25 @@ fun RatingBar(
 ) {
     var isHalfStar = (rating % 1) != 0.0
 
-    Row{
-    for (index in 1..stars){
-        Icon(modifier = modifier.clickable {
-                                           onRatingChange(index.toDouble())
-                    },
-            contentDescription = null,
-            tint = starsColor,
-            imageVector = if(index <= rating){
-                Icons.Rounded.Star
-            }else{
-                if(isHalfStar){
-                    isHalfStar = false
-                    Icons.Default.StarHalf
-                }else{
-                    Icons.Default.StarOutline
-                }
-            }
-            ,
+    Row {
+        for (index in 1..stars) {
+            Icon(
+                modifier = modifier.clickable {
+                    onRatingChange(index.toDouble())
+                },
+                contentDescription = null,
+                tint = starsColor,
+                imageVector = if (index <= rating) {
+                    Icons.Rounded.Star
+                } else {
+                    if (isHalfStar) {
+                        isHalfStar = false
+                        Icons.Default.StarHalf
+                    } else {
+                        Icons.Default.StarOutline
+                    }
+                },
             )
-    }
+        }
     }
 }

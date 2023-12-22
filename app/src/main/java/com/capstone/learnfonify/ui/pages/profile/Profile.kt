@@ -8,11 +8,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BookOnline
@@ -21,6 +25,7 @@ import androidx.compose.material.icons.rounded.Logout
 import androidx.compose.material.icons.rounded.Person4
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -55,36 +60,50 @@ fun ProfilePage(
     profileViewModel: ProfileViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context)
     )
-    ) {
+) {
 
     profileViewModel.userState.collectAsState(
         initial = UiState.Loading
     ).value.let { uiState ->
         when (uiState) {
             is UiState.Loading -> {
-
                 profileViewModel.getUserFromId(id)
+                Box(
+                    modifier =
+                    Modifier
+                        .fillMaxHeight()
+                        .defaultMinSize(400.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    LinearProgressIndicator(
+                        modifier = Modifier
+                            .width(120.dp)
+                            .padding(top = 24.dp),
+                        color = MaterialTheme.colorScheme.secondary,
+                    )
+                }
             }
 
             is UiState.Success -> {
-                Log.d("USERRRRR",uiState.data.toString())
+                Log.d("USERRRRR", uiState.data.toString())
                 ProfileContent(
-                   onSignOut= {
+                    onSignOut = {
 
-                    profileViewModel.deleteToken()
-                       Toast.makeText(context,"Sign Out Success", Toast.LENGTH_SHORT).show()
-                       navController.navigate(Screen.SplashLogin.route)
+                        profileViewModel.deleteToken()
+                        Toast.makeText(context, "Sign Out Success", Toast.LENGTH_SHORT).show()
+                        navController.navigate(Screen.SplashLogin.route)
 
                     },
                     userItem = uiState.data
-                    )
+                )
             }
+
             is UiState.Error -> {
             }
         }
 
 
-}
+    }
 }
 
 @Composable
@@ -164,7 +183,7 @@ fun ProfileContent(
                     .padding(bottom = 16.dp)
             )
 
-            if(userItem.age != null){
+            if (userItem.age != null) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -196,7 +215,7 @@ fun ProfileContent(
                 }
             }
 
-            if(userItem.majoring != null){
+            if (userItem.majoring != null) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

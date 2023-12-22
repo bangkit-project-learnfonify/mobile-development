@@ -2,6 +2,7 @@ package com.capstone.learnfonify.ui.pages.coursedetail
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -62,6 +63,7 @@ import com.capstone.learnfonify.data.response.DetailCourseItem
 import com.capstone.learnfonify.di.Injection
 import com.capstone.learnfonify.ui.components.DetailBar
 import com.capstone.learnfonify.ui.components.RatingBar
+import com.capstone.learnfonify.ui.components.StarDialog
 import com.capstone.learnfonify.ui.theme.LearnfonifyTheme
 import com.kyy47.kyyairlines.common.UiState
 import kotlinx.coroutines.CoroutineScope
@@ -76,9 +78,8 @@ fun CourseDetailPage(
         factory = ViewModelFactory.getInstance(context)
     ),
     courseId: Int,
+    userId: Int
 ) {
-
-
 
 
     detailViewModel.uiState.collectAsState(
@@ -111,10 +112,10 @@ fun CourseDetailPage(
                     onInsertSavedCourse = {
                         detailViewModel.insertToSavedCourse(
                             SavedCourseEntity(
-                               uiState.data.id,
-                               uiState.data.title,
-                               uiState.data.description,
-                               uiState.data.image.toString(),
+                                uiState.data.id,
+                                uiState.data.title,
+                                uiState.data.description,
+                                uiState.data.image.toString(),
                             ),
                         )
 
@@ -123,8 +124,10 @@ fun CourseDetailPage(
                         detailViewModel.removeSavedCourse(it)
                     },
                     detailViewModel,
-                    uiState.data.id
-                    )
+                    uiState.data.id,
+                    userId,
+                    context
+                )
             }
 
             is UiState.Error -> {
@@ -139,9 +142,11 @@ fun CourseDetailPage(
 fun CourseDetailContent(
     course: DetailCourseItem,
     onInsertSavedCourse: () -> Unit,
-    onRemoveSavedCourse: (Int) ->Unit,
+    onRemoveSavedCourse: (Int) -> Unit,
     detailViewModel: CourseDetailViewModel,
-    id: Int
+    courseId: Int,
+    userId: Int,
+    context: Context
 ) {
     var isDisplayModal by remember {
         mutableStateOf(false)
@@ -181,9 +186,9 @@ fun CourseDetailContent(
             AsyncImage(
                 model = course.image,
                 contentDescription = course.title,
-                        modifier = Modifier
-                        .size(286.dp),
-                )
+                modifier = Modifier
+                    .size(286.dp),
+            )
 
         }
         Box(
@@ -235,9 +240,10 @@ fun CourseDetailContent(
                             .padding(horizontal = 8.dp, vertical = 4.dp)
 
                     )
-                    if(!course.rating.isNullOrEmpty()){
-                        RatingBar(onRatingChange = {
-                        },
+                    if (!course.rating.isNullOrEmpty()) {
+                        RatingBar(
+                            onRatingChange = {
+                            },
                             rating = course.rating.toDouble(),
                             starsColor = Color.Black
                         )
@@ -250,7 +256,7 @@ fun CourseDetailContent(
                             .padding(top = 32.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        if(!course.fee.isNullOrEmpty()){
+                        if (!course.fee.isNullOrEmpty()) {
                             Text(
                                 text = course.fee.toString(),
                                 style = MaterialTheme.typography.labelSmall.copy(
@@ -261,7 +267,10 @@ fun CourseDetailContent(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(16.dp))
                                     .background(Color.Magenta) // Set background color
-                                    .border(1.dp, Color.Black) // Set border with thickness and color
+                                    .border(
+                                        1.dp,
+                                        Color.Black
+                                    ) // Set border with thickness and color
                                     .padding(horizontal = 8.dp, vertical = 4.dp), //
                             )
                         }
@@ -301,7 +310,7 @@ fun CourseDetailContent(
                                 textAlign = TextAlign.Center
                             )
                         )
-                        if(!course.instructor.isNullOrEmpty()){
+                        if (!course.instructor.isNullOrEmpty()) {
                             Text(
                                 text = course.instructor.toString(),
                                 style = MaterialTheme.typography.labelMedium.copy(
@@ -355,7 +364,7 @@ fun CourseDetailContent(
                                     fontWeight = FontWeight.Bold,
                                 ),
                                 modifier = Modifier
-                                    .padding( horizontal = 8.dp)
+                                    .padding(horizontal = 8.dp)
                             )
                         }
                     }
@@ -364,11 +373,13 @@ fun CourseDetailContent(
             }
         }
 
-        DetailBar(onInsertSavedCourse = onInsertSavedCourse,
+        DetailBar(
+            onInsertSavedCourse = onInsertSavedCourse,
             detailViewModel = detailViewModel,
-            id = id,
-            onRemoveSavedCourse = onRemoveSavedCourse
-            )
+            id = courseId,
+            onRemoveSavedCourse = onRemoveSavedCourse,
+            linkUrl = course.link.toString()
+        )
 
         var rating by remember {
             mutableDoubleStateOf(0.0)
@@ -381,6 +392,12 @@ fun CourseDetailContent(
                 onConfirmation = {
                     isDisplayModal = false
                     isDoneGiveRating = true
+                    detailViewModel.postRating(
+                        userId = userId,
+                        courseId = courseId,
+                        userRating = rating.toInt()
+                    )
+                    Toast.makeText(context, "Berhasil Mengirim", Toast.LENGTH_SHORT).show()
                 },
                 onRatingChange = {
                     rating = it
@@ -401,72 +418,3 @@ fun CourseDetailContent(
 //    }
 //}
 
-@Composable
-fun StarDialog(
-    onDismissRequest: () -> Unit,
-    onConfirmation: () -> Unit,
-    rating: Double,
-    onRatingChange: (Double) -> Unit,
-) {
-    Dialog(onDismissRequest = { onDismissRequest() }) {
-        // Draw a rectangle shape with rounded corners inside the dialog
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.White),
-            shape = RoundedCornerShape(16.dp),
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-
-
-                Text(
-                    text = "Berikan Rating Course Ini",
-                    style = MaterialTheme.typography.labelLarge.copy(
-                        fontWeight = FontWeight.SemiBold,
-                        textAlign = TextAlign.Center,
-                        color = Color.Black
-                    )
-                )
-                RatingBar(
-                    modifier = Modifier
-                        .size(55.dp)
-                        .padding(top = 6.dp),
-                    rating = rating,
-                    starsColor = Color.Green,
-                    onRatingChange = onRatingChange
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                ) {
-                    TextButton(
-                        onClick = { onDismissRequest() },
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .background(Color.Red),
-                    ) {
-                        Text("Batal")
-                    }
-                    TextButton(
-                        onClick = { onConfirmation() },
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .background(Color.Cyan),
-                    ) {
-                        Text("Kirim")
-                    }
-                }
-            }
-
-
-        }
-    }
-}

@@ -12,27 +12,29 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
-class ProfileViewModel( private val courseRepository: CourseRepository
-): ViewModel() {
+class ProfileViewModel(
+    private val courseRepository: CourseRepository
+) : ViewModel() {
     private val _userState: MutableStateFlow<UiState<UserFromIdItem>> = MutableStateFlow(
-        UiState.Loading)
-    val userState: StateFlow<UiState<UserFromIdItem>> get()  = _userState
+        UiState.Loading
+    )
+    val userState: StateFlow<UiState<UserFromIdItem>> get() = _userState
 
-     fun getUserFromId(id: Int){
+    fun getUserFromId(id: Int) {
 
-         viewModelScope.launch {
-             courseRepository.getUserFormId(id)
-                 .catch {
-                     _userState.value = UiState.Error("data not found")
-                 }.collect{
+        viewModelScope.launch {
+            courseRepository.getUserFormId(id)
+                .catch {
+                    _userState.value = UiState.Error("data not found")
+                }.collect {
                     _userState.value = UiState.Success(it)
-                 }
-         }
+                }
+        }
 
     }
 
-    fun deleteToken(){
-            courseRepository.removeSession()
+    fun deleteToken() {
+        courseRepository.removeSession()
     }
 
 }

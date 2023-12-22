@@ -65,7 +65,7 @@ fun SavedContent(
         ) {
             Icon(
                 imageVector = Icons.Rounded.SaveAlt,
-                contentDescription = "Saved" ,
+                contentDescription = "Saved",
                 modifier = Modifier
                     .size(38.dp)
             )
@@ -87,15 +87,14 @@ fun SavedContent(
                 }
 
                 is UiState.Success -> {
-                    if(!uiState.data.isNullOrEmpty()){
+                    if (!uiState.data.isNullOrEmpty()) {
                         LazyColumn(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 34.dp)
-                            ,
+                                .padding(top = 34.dp),
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                            items(uiState.data, key = {it.courseId}){
+                            items(uiState.data, key = { it.courseId }) {
                                 MyCardCourse(it, onNagivateToDetail = onNagivateToDetail)
                             }
 

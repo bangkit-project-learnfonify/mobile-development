@@ -70,12 +70,12 @@ fun LoginPage(
     shareElement: @Composable () -> Unit,
     onLoginWithEmailClick: (String, String) -> Unit
 ) {
-    LoginContent( onSignInClick, shareElement = shareElement,
+    LoginContent(
+        onSignInClick, shareElement = shareElement,
         onRegisterClick = onRegisterClick,
-        onLoginWithEmailClick = onLoginWithEmailClick)
+        onLoginWithEmailClick = onLoginWithEmailClick
+    )
 }
-
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -231,8 +231,7 @@ fun LoginContent(
             text = "or Continue With",
             style = MaterialTheme.typography.labelMedium.copy(
                 fontWeight = FontWeight.Normal,
-            )
-            ,
+            ),
             modifier = Modifier
                 .padding(top = 24.dp)
         )
@@ -243,15 +242,6 @@ fun LoginContent(
                 .size(10.dp)
         )
 
-
-        Image(
-            painter = painterResource(R.drawable.google), contentDescription = null,
-            modifier = Modifier
-                .size(50.dp)
-                .clip(CircleShape)
-                .clickable { },
-            contentScale = ContentScale.Crop
-        )
 
     }
 

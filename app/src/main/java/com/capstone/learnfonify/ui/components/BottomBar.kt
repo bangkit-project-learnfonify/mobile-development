@@ -25,8 +25,7 @@ import com.capstone.learnfonify.ui.theme.LearnfonifyTheme
 
 @Composable
 fun BottomBar(
-    modifier: Modifier = Modifier,
-    navController: NavHostController
+    modifier: Modifier = Modifier, navController: NavHostController
 ) {
 
     NavigationBar(
@@ -53,25 +52,19 @@ fun BottomBar(
             ),
         )
         navigationItems.map { item ->
-            NavigationBarItem(
-                selected = item.screen.route == currentRoute,
-                onClick = {
-                    navController.navigate(item.screen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        restoreState = true
-                        launchSingleTop = true
+            NavigationBarItem(selected = item.screen.route == currentRoute, onClick = {
+                navController.navigate(item.screen.route) {
+                    popUpTo(navController.graph.findStartDestination().id) {
+                        saveState = true
                     }
-                },
-                icon = {
-                    Icon(
-                        imageVector = item.icon,
-                        contentDescription = item.title
-                    )
-                },
-                label = { Text(text = item.title) }
-            )
+                    restoreState = true
+                    launchSingleTop = true
+                }
+            }, icon = {
+                Icon(
+                    imageVector = item.icon, contentDescription = item.title
+                )
+            }, label = { Text(text = item.title) })
         }
     }
 }

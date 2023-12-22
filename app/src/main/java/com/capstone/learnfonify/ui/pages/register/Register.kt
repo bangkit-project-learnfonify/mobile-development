@@ -76,18 +76,15 @@ fun RegisterContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(R.drawable.register), contentDescription = null,
-            modifier = Modifier
-                .size(200.dp),
+            painter = painterResource(R.drawable.register),
+            contentDescription = null,
+            modifier = Modifier.size(200.dp),
             contentScale = ContentScale.Crop
         )
         Text(
-            text = "LearnFonify",
-            style = MaterialTheme.typography.headlineSmall.copy(
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            ),
-            modifier = Modifier
+            text = "LearnFonify", style = MaterialTheme.typography.headlineSmall.copy(
+                fontWeight = FontWeight.Bold, textAlign = TextAlign.Center
+            ), modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)
         )
@@ -97,11 +94,9 @@ fun RegisterContent(
                 .padding(horizontal = 20.dp),
         ) {
             Text(
-                text = "Username",
-                style = MaterialTheme.typography.titleMedium.copy(
+                text = "Username", style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
-                ),
-                modifier = Modifier
+                ), modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 15.dp)
             )
@@ -119,8 +114,7 @@ fun RegisterContent(
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 shape = RoundedCornerShape(20.dp),
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.primary,
                 ),
@@ -134,11 +128,9 @@ fun RegisterContent(
                 .padding(horizontal = 20.dp),
         ) {
             Text(
-                text = "Email",
-                style = MaterialTheme.typography.titleMedium.copy(
+                text = "Email", style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
-                ),
-                modifier = Modifier
+                ), modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 15.dp)
             )
@@ -156,8 +148,7 @@ fun RegisterContent(
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 shape = RoundedCornerShape(20.dp),
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.primary,
                 ),
@@ -171,11 +162,9 @@ fun RegisterContent(
                 .padding(horizontal = 20.dp),
         ) {
             Text(
-                text = "Password",
-                style = MaterialTheme.typography.titleMedium.copy(
+                text = "Password", style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
-                ),
-                modifier = Modifier
+                ), modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 15.dp)
             )
@@ -194,8 +183,7 @@ fun RegisterContent(
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 shape = RoundedCornerShape(20.dp),
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.primary,
                 ),
@@ -219,8 +207,7 @@ fun RegisterContent(
                 .padding(vertical = 20.dp, horizontal = 20.dp)
                 .fillMaxWidth()
                 .clipToBounds(),
-        )
-        {
+        ) {
             Text(
                 text = "Register",
                 style = MaterialTheme.typography.titleSmall.copy(
@@ -242,13 +229,7 @@ fun RegisterContent(
                 .size(10.dp)
         )
 
-        Image(
-            painter = painterResource(R.drawable.google), contentDescription = null,
-            modifier = Modifier
-                .size(50.dp)
-                .clip(CircleShape),
-            contentScale = ContentScale.Crop
-        )
+
 
     }
 

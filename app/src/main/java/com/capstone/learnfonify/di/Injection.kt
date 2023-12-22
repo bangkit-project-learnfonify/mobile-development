@@ -12,9 +12,9 @@ import kotlinx.coroutines.runBlocking
 object Injection {
     fun provideRepository(context: Context): CourseRepository {
         val pref = SessionPreference.getInstance(context.dataStore)
-        val token = runBlocking { pref.getSessionToken()    }
+        val token = runBlocking { pref.getSessionToken() }
         val apiService = ApiConfig.getApiService(token)
-         val db = SavedCourseDatabase
+        val db = SavedCourseDatabase
             .getDatabase(context)
         val mSavedCourseDao = db!!.savedCourseDao()
 

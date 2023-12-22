@@ -47,7 +47,7 @@ import com.capstone.learnfonify.data.response.CourseItem
 fun MyListCourse(
     modifier: Modifier = Modifier
         .padding(top = 24.dp),
-    courses: List<CourseItem> ,
+    courses: List<CourseItem>,
     onNagivateToDetail: (Int) -> Unit,
     onNagivateToMore: (String) -> Unit,
     titleList: String = courses[0].category.toString(),
@@ -72,7 +72,7 @@ fun MyListCourse(
             )
             Button(
                 onClick = {
-                          onNagivateToMore(titleList)
+                    onNagivateToMore(titleList)
                 },
                 shape = RoundedCornerShape(12.dp),
                 contentPadding = PaddingValues(10.dp),
@@ -93,13 +93,16 @@ fun MyListCourse(
                             fontWeight = FontWeight.Bold,
                         ),
                         modifier = Modifier
-                            .padding( horizontal = 8.dp)
+                            .padding(horizontal = 8.dp)
                     )
-                    Spacer(modifier = Modifier
-                    )
-                    Icon(imageVector = Icons.Rounded.ArrowRight, contentDescription = "All",
+                    Spacer(
                         modifier = Modifier
-                            .size(26.dp))
+                    )
+                    Icon(
+                        imageVector = Icons.Rounded.ArrowRight, contentDescription = "All",
+                        modifier = Modifier
+                            .size(26.dp)
+                    )
                 }
 
             }
@@ -115,7 +118,7 @@ fun MyListCourse(
             ),
         ) {
 
-            items(courses, key = { it.id}) {course ->
+            items(courses, key = { it.id }) { course ->
 
                 Box(
                     modifier = Modifier
@@ -134,7 +137,8 @@ fun MyListCourse(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
-                        AsyncImage(model = course.image,
+                        AsyncImage(
+                            model = course.image,
                             contentDescription = course.title,
                             modifier = Modifier
                                 .size(70.dp)
@@ -178,7 +182,7 @@ fun MyListCourse(
                                     .padding(top = 6.dp)
                                     .width(70.dp)
                             )
-                            if(course.fee != null){
+                            if (course.fee != null) {
                                 Text(
                                     text = course.fee.toString(),
                                     style = MaterialTheme.typography.labelSmall.copy(
@@ -198,5 +202,5 @@ fun MyListCourse(
         }
 
     }
-    }
+}
 

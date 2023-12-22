@@ -48,7 +48,7 @@ import com.skydoves.orbital.rememberContentWithOrbitalScope
 @Composable
 fun LearnFornifySplashScreen(
     onSignInClick: () -> Unit,
-    onRegisterClick: ()-> Unit,
+    onRegisterClick: () -> Unit,
     onLoginWithEmailClick: (String, String) -> Unit
 ) {
     var isTransFormed by rememberSaveable {
@@ -63,8 +63,7 @@ fun LearnFornifySplashScreen(
                     transformSpec = SpringSpec(stiffness = 40f)
                 )
                 .then(if (isTransFormed) {
-                    Modifier
-                        .size(200.dp)
+                    Modifier.size(200.dp)
                 } else {
                     Modifier
                         .size(475.dp)
@@ -73,10 +72,8 @@ fun LearnFornifySplashScreen(
                             this.translationX = -100.dp.toPx()
                         }
                 }),
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(R.drawable.login)
-                .crossfade(true)
-                .build(),
+            model = ImageRequest.Builder(LocalContext.current).data(R.drawable.login)
+                .crossfade(true).build(),
             contentDescription = "Learnfornify",
         )
     }
@@ -84,8 +81,11 @@ fun LearnFornifySplashScreen(
     Orbital(
     ) {
         if (isTransFormed) {
-            LoginPage(onSignInClick = onSignInClick, onRegisterClick =onRegisterClick, shareElement = { shareImage()}
-                , onLoginWithEmailClick = onLoginWithEmailClick
+            LoginPage(
+                onSignInClick = onSignInClick,
+                onRegisterClick = onRegisterClick,
+                shareElement = { shareImage() },
+                onLoginWithEmailClick = onLoginWithEmailClick
             )
         } else {
             Column(
@@ -109,8 +109,7 @@ fun LearnFornifySplashScreen(
                             Text(
                                 text = "Fonify",
                                 style = MaterialTheme.typography.displayLarge.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color.Cyan
+                                    fontWeight = FontWeight.Bold, color = Color.Cyan
                                 ),
                             )
                         }
@@ -130,19 +129,16 @@ fun LearnFornifySplashScreen(
                 shareImage()
 
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
                         text = "Unleash your potential, now!",
                         style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight = FontWeight.Light,
-                            textAlign = TextAlign.Center
+                            fontWeight = FontWeight.Light, textAlign = TextAlign.Center
                         ),
-                        modifier = Modifier
-                            .fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(),
                     )
                     Button(
                         onClick = {
@@ -156,15 +152,11 @@ fun LearnFornifySplashScreen(
                         modifier = Modifier
                             .clipToBounds()
                             .padding(bottom = 24.dp),
-                    )
-                    {
+                    ) {
                         Text(
-                            text = "Join Us",
-                            style = MaterialTheme.typography.titleSmall.copy(
+                            text = "Join Us", style = MaterialTheme.typography.titleSmall.copy(
                                 fontWeight = FontWeight.Bold,
-                            ),
-                            modifier = Modifier
-                                .padding(vertical = 6.dp, horizontal = 16.dp)
+                            ), modifier = Modifier.padding(vertical = 6.dp, horizontal = 16.dp)
                         )
                     }
                 }

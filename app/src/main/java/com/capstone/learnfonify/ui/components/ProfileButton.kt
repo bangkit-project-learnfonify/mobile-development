@@ -14,9 +14,10 @@ import com.capstone.learnfonify.R
 @Composable
 fun ProfileButton(url: String) {
 
-    AsyncImage(model = url,
+    AsyncImage(
+        model = url,
         contentDescription = "Profile",
-        error = painterResource(R.drawable.google),
+        error = painterResource(R.drawable.profile_dummy),
         modifier = Modifier
             .size(38.dp)
             .clip(CircleShape)

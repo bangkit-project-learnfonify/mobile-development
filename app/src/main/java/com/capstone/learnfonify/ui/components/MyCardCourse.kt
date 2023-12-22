@@ -42,9 +42,8 @@ fun MyCardCourse(
             .background(Color.White)
             .padding(8.dp)
             .clickable {
-                       onNagivateToDetail(course.courseId)
-            }
-        ,
+                onNagivateToDetail(course.courseId)
+            },
     ) {
         Row(
             modifier = Modifier
@@ -57,11 +56,10 @@ fun MyCardCourse(
                 contentDescription = null,
                 modifier = Modifier
                     .size(106.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    ,
+                    .clip(RoundedCornerShape(16.dp)),
                 contentScale = ContentScale.Crop
 
-                )
+            )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

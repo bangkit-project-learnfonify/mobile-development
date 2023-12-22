@@ -20,27 +20,24 @@ class ViewModelFactory(private val repository: CourseRepository) :
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             return HomeViewModel(repository) as T
-        }
-        else if (modelClass.isAssignableFrom(CourseDetailViewModel::class.java)) {
+        } else if (modelClass.isAssignableFrom(CourseDetailViewModel::class.java)) {
             return CourseDetailViewModel(repository) as T
-        }
-        else if (modelClass.isAssignableFrom(LoginInViewModel::class.java)) {
+        } else if (modelClass.isAssignableFrom(LoginInViewModel::class.java)) {
             return LoginInViewModel(repository) as T
-        }
-        else if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
+        } else if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
             return RegisterViewModel(repository) as T
-        }
-        else if (modelClass.isAssignableFrom(SavedViewModel::class.java)) {
+        } else if (modelClass.isAssignableFrom(SavedViewModel::class.java)) {
             return SavedViewModel(repository) as T
-        }
-        else if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
+        } else if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
             return ProfileViewModel(repository) as T
-        }else if (modelClass.isAssignableFrom(MoreViewModel::class.java)) {
+        } else if (modelClass.isAssignableFrom(MoreViewModel::class.java)) {
             return MoreViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
+
     companion object {
-        fun getInstance(context: Context): ViewModelFactory = ViewModelFactory(Injection.provideRepository(context))
+        fun getInstance(context: Context): ViewModelFactory =
+            ViewModelFactory(Injection.provideRepository(context))
     }
 }

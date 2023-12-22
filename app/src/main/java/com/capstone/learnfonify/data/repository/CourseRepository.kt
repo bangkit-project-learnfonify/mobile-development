@@ -88,6 +88,12 @@ class CourseRepository( private val apiService: ApiService,
     }
 
 
+     fun postRating(userId: Int, courseId: Int, userRating: Int){
+        coroutineScope.launch(Dispatchers.IO) {
+            apiService.postRating(userId, courseId, userRating)
+        }
+    }
+
      fun insert(course: SavedCourseEntity){
          coroutineScope.launch(Dispatchers.IO) {
              mSavedCourseDao.addToSaved(course)
@@ -108,6 +114,8 @@ class CourseRepository( private val apiService: ApiService,
             mSavedCourseDao.removeCourse(id)
         }
     }
+
+
 
 
     companion object {
