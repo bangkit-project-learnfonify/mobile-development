@@ -1,5 +1,8 @@
 package com.capstone.learnfonify.data.repository
 
+import com.capstone.learnfonify.data.local.entity.SavedCourseEntity
+import com.capstone.learnfonify.data.local.room.SavedCourseDao
+import com.capstone.learnfonify.data.local.room.SavedCourseDatabase
 import com.capstone.learnfonify.data.preferences.SessionPreference
 import com.capstone.learnfonify.data.response.CategoryItem
 import com.capstone.learnfonify.data.response.CourseFromId
@@ -10,13 +13,19 @@ import com.capstone.learnfonify.data.response.LoginWithEmailReponse
 import com.capstone.learnfonify.data.response.RegisterWithEmailResponse
 import com.capstone.learnfonify.data.retrofit.ApiConfig
 import com.capstone.learnfonify.data.retrofit.ApiService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 
 
-class CourseRepository( private val apiService: ApiService, private  val pref: SessionPreference) {
+class CourseRepository( private val apiService: ApiService,
+                        private  val pref: SessionPreference,
+                        private  val mSavedCourseDao: SavedCourseDao) {
 
 
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
     fun getIsAuthLogin(): Flow<Boolean> {
         return pref.getSessionLogin()
     }
@@ -70,10 +79,34 @@ class CourseRepository( private val apiService: ApiService, private  val pref: S
         return flowOf(apiService.getCoursesFromId(id).data?.get(0) ?: detailDefault)
     }
 
+
+     fun insert(course: SavedCourseEntity){
+         coroutineScope.launch(Dispatchers.IO) {
+             mSavedCourseDao.addToSaved(course)
+         }
+
+     }
+
+    fun getSavedCourse(): Flow<List<SavedCourseEntity>>{
+        return mSavedCourseDao.getSavedCourse()
+    }
+
+    fun checkSavedCourse(id: Int): Int{
+            return mSavedCourseDao.checkCourse(id)
+    }
+
+    fun removeSavedCourse(id: Int){
+        coroutineScope.launch(Dispatchers.IO) {
+            mSavedCourseDao.removeCourse(id)
+        }
+    }
+
+
     companion object {
         fun getInstance(
             apiService: ApiService,
-            pref: SessionPreference
-        ): CourseRepository = CourseRepository( apiService, pref)
+            pref: SessionPreference,
+            mSavedCourseDao: SavedCourseDao
+        ): CourseRepository = CourseRepository( apiService, pref, mSavedCourseDao)
     }
 }

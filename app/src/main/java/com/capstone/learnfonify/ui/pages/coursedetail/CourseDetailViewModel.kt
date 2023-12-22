@@ -2,6 +2,7 @@ package com.capstone.learnfonify.ui.pages.coursedetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.capstone.learnfonify.data.local.entity.SavedCourseEntity
 import com.capstone.learnfonify.data.repository.CourseRepository
 import com.capstone.learnfonify.data.response.CourseItem
 import com.capstone.learnfonify.data.response.DetailCourseItem
@@ -19,10 +20,27 @@ class CourseDetailViewModel(
         UiState.Loading)
     val uiState: StateFlow<UiState<DetailCourseItem>> get()  = _uiState
 
+
+
+
+
     fun deleteToken(){
         viewModelScope.launch {
             courseRepository.removeSession()
         }
+    }
+
+
+    fun insertToSavedCourse(course: SavedCourseEntity){
+            courseRepository.insert(course)
+
+    }
+    fun removeSavedCourse(id: Int){
+        courseRepository.removeSavedCourse(id)
+    }
+
+    fun checkSavedCourse(id: Int): Int{
+        return courseRepository.checkSavedCourse(id)
     }
 
     fun getCourseFromId(id: Int) {

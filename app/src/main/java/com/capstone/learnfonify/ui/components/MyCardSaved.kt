@@ -31,10 +31,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.capstone.learnfonify.R
+import com.capstone.learnfonify.data.local.entity.SavedCourseEntity
 import com.capstone.learnfonify.ui.theme.LearnfonifyTheme
 
 @Composable
-fun MyCardSaved() {
+fun MyCardSaved(course: SavedCourseEntity) {
     Box(
         modifier = Modifier
             .shadow(
@@ -52,8 +53,8 @@ fun MyCardSaved() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Image(
-                painterResource(id = R.drawable.course_img_detail),
+            AsyncImage(
+                model = course.imgUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .size(106.dp)
@@ -68,7 +69,7 @@ fun MyCardSaved() {
             ) {
 
                 Text(
-                    text = "Learn",
+                    text = course.titleCourse,
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
                     ),
@@ -76,7 +77,7 @@ fun MyCardSaved() {
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    text = "Pada kelas ini, kamu akan mempelajari  fundamental dari UI/UX Design menjadi salksalskal salskaskalskas salksalkal",
+                    text = course.description,
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontWeight = FontWeight.Normal,
                         textAlign = TextAlign.Start
@@ -97,10 +98,10 @@ fun MyCardSaved() {
     }
 }
 
-@Preview(showBackground = true, device = Devices.PIXEL_4)
-@Composable
-fun MyCardSavedPrev() {
-    LearnfonifyTheme {
-        MyCardSaved()
-    }
-}
+//@Preview(showBackground = true, device = Devices.PIXEL_4)
+//@Composable
+//fun MyCardSavedPrev() {
+//    LearnfonifyTheme {
+//        MyCardSaved()
+//    }
+//}

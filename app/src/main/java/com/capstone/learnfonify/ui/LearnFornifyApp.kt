@@ -60,7 +60,6 @@ fun LearnFornifyApp(
             when (currentRoute) {
                 Screen.SplashLogin.route -> {}
                 Screen.DetailCourse.route -> {
-                    DetailBar()
                 }
                 Screen.Register.route -> {
                 }
@@ -82,7 +81,7 @@ fun LearnFornifyApp(
 
             }
             composable(Screen.Saved.route) {
-                StoredPage()
+                StoredPage(context)
             }
             composable(
                 Screen.DetailCourse.route,

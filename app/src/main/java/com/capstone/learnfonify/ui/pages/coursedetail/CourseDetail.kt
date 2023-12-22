@@ -1,9 +1,11 @@
 package com.capstone.learnfonify.ui.pages.coursedetail
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +30,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
@@ -54,11 +57,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.capstone.learnfonify.R
 import com.capstone.learnfonify.data.ViewModelFactory
+import com.capstone.learnfonify.data.local.entity.SavedCourseEntity
 import com.capstone.learnfonify.data.response.DetailCourseItem
 import com.capstone.learnfonify.di.Injection
+import com.capstone.learnfonify.ui.components.DetailBar
 import com.capstone.learnfonify.ui.components.RatingBar
 import com.capstone.learnfonify.ui.theme.LearnfonifyTheme
 import com.kyy47.kyyairlines.common.UiState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun CourseDetailPage(
@@ -66,8 +75,13 @@ fun CourseDetailPage(
     detailViewModel: CourseDetailViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context)
     ),
-    courseId: Int
+    courseId: Int,
 ) {
+
+    val isSaved =  remember {
+        mutableStateOf(true)
+    }
+
     detailViewModel.uiState.collectAsState(
         initial = UiState.Loading
     ).value.let { uiState ->
@@ -93,7 +107,27 @@ fun CourseDetailPage(
             }
 
             is UiState.Success -> {
-                CourseDetailContent(uiState.data)
+                CourseDetailContent(
+                    uiState.data,
+                    onInsertSavedCourse = {
+                        CoroutineScope(Dispatchers.Main).launch(
+                            Dispatchers.IO
+                        ) {
+                         isSaved.value = detailViewModel.checkSavedCourse(uiState.data.id ) != 0
+                        }
+
+                        detailViewModel.insertToSavedCourse(
+                            SavedCourseEntity(
+                               uiState.data.id,
+                               uiState.data.title,
+                               uiState.data.description,
+                               uiState.data.image.toString(),
+                            ),
+                        )
+
+                    },
+                    isSaved.value
+                    )
             }
 
             is UiState.Error -> {
@@ -107,6 +141,8 @@ fun CourseDetailPage(
 @Composable
 fun CourseDetailContent(
     course: DetailCourseItem,
+    onInsertSavedCourse: () -> Unit,
+    isSaved: Boolean
 ) {
     var isDisplayModal by remember {
         mutableStateOf(false)
@@ -114,6 +150,8 @@ fun CourseDetailContent(
     var isDoneGiveRating by remember {
         mutableStateOf(false)
     }
+
+    Log.d("LALALA", isSaved.toString())
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -194,7 +232,8 @@ fun CourseDetailContent(
                             .clip(RoundedCornerShape(16.dp))
                             .background(Color.Cyan) // Set background color
                             .border(2.dp, Color.LightGray) // Set border with thickness and color
-                            .padding(horizontal = 8.dp, vertical = 4.dp), //
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+
                     )
                     Row(
                         modifier = Modifier
@@ -309,6 +348,8 @@ fun CourseDetailContent(
                 }
             }
         }
+
+        DetailBar(onInsertSavedCourse = onInsertSavedCourse, isSaved = isSaved)
 
         var rating by remember {
             mutableDoubleStateOf(0.0)

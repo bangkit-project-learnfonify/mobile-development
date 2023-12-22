@@ -1,6 +1,7 @@
 package com.capstone.learnfonify.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -19,14 +20,15 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.capstone.learnfonify.R
-import com.capstone.learnfonify.ui.theme.LearnfonifyTheme
 
 
 @Composable
-fun DetailBar() {
+fun DetailBar(
+    onInsertSavedCourse: () -> Unit,
+    isSaved: Boolean
+              ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,17 +37,24 @@ fun DetailBar() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
+            painter = if(isSaved)   painterResource(R.drawable.saved) else  painterResource(R.drawable.not_saved),
+            contentDescription = "save",
+            modifier = Modifier.size(59.dp)
+                .clickable {
+                    onInsertSavedCourse()
+                }
+        )
+
+        Image(
             painter = painterResource(id = R.drawable.share),
             contentDescription = "share",
             modifier = Modifier.size(59.dp)
+
         )
-        Image(
-            painter = painterResource(id = R.drawable.save),
-            contentDescription = "save",
-            modifier = Modifier.size(59.dp)
-        )
+
         Button(
             onClick = {
+
             },
             shape = RoundedCornerShape(12.dp),
             contentPadding = PaddingValues(10.dp),
@@ -72,10 +81,10 @@ fun DetailBar() {
 
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DetailBarPreview() {
-    LearnfonifyTheme {
-        DetailBar()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun DetailBarPreview() {
+//    LearnfonifyTheme {
+//        DetailBar(SavedCourseEntity())
+//    }
+//}

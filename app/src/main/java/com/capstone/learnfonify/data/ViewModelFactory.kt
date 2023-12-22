@@ -9,6 +9,7 @@ import com.capstone.learnfonify.ui.pages.coursedetail.CourseDetailViewModel
 import com.capstone.learnfonify.ui.pages.home.HomeViewModel
 import com.capstone.learnfonify.ui.pages.login.LoginInViewModel
 import com.capstone.learnfonify.ui.pages.register.RegisterViewModel
+import com.capstone.learnfonify.ui.pages.saved.SavedViewModel
 
 class ViewModelFactory(private val repository: CourseRepository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -26,6 +27,9 @@ class ViewModelFactory(private val repository: CourseRepository) :
         }
         else if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
             return RegisterViewModel(repository) as T
+        }
+        else if (modelClass.isAssignableFrom(SavedViewModel::class.java)) {
+            return SavedViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }

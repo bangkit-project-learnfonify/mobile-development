@@ -47,13 +47,13 @@ data class DetailCourseItem(
 	val createdAt: String? = null,
 
 	@field:SerializedName("description")
-	val description: String? = null,
+	val description: String ,
 
 	@field:SerializedName("id")
 	val id: Int,
 
 	@field:SerializedName("title")
-	val title: String? = null,
+	val title: String,
 
 	@field:SerializedName("category")
 	val category: String? = null
