@@ -1,5 +1,6 @@
 package com.capstone.learnfonify.ui.pages.coursedetail
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -50,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.capstone.learnfonify.R
 import com.capstone.learnfonify.data.ViewModelFactory
 import com.capstone.learnfonify.data.response.DetailCourseItem
@@ -60,8 +62,9 @@ import com.kyy47.kyyairlines.common.UiState
 
 @Composable
 fun CourseDetailPage(
+    context: Context,
     detailViewModel: CourseDetailViewModel = viewModel(
-        factory = ViewModelFactory(Injection.provideRepository())
+        factory = ViewModelFactory.getInstance(context)
     ),
     courseId: Int
 ) {
@@ -130,20 +133,21 @@ fun CourseDetailContent(
             contentAlignment = Alignment.Center
 
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.course_img_detail),
-                contentDescription = null,
+            AsyncImage(
+                model = course.image,
+                contentDescription = course.title,
                 modifier = Modifier
                     .fillMaxWidth()
+                    .height(356.dp)
                     .blur(radius = 8.dp),
 
                 )
-            Image(
-                painter = painterResource(id = R.drawable.course_img_detail),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(286.dp),
-            )
+            AsyncImage(
+                model = course.image,
+                contentDescription = course.title,
+                        modifier = Modifier
+                        .size(286.dp),
+                )
 
         }
         Box(
@@ -329,13 +333,13 @@ fun CourseDetailContent(
     }
 }
 
-@Preview(showBackground = true, device = Devices.PIXEL_4)
-@Composable
-fun CourseDetailPagePreview() {
-    LearnfonifyTheme {
-        CourseDetailPage(courseId = 12)
-    }
-}
+//@Preview(showBackground = true, device = Devices.PIXEL_4)
+//@Composable
+//fun CourseDetailPagePreview() {
+//    LearnfonifyTheme {
+//        CourseDetailPage(courseId = 12)
+//    }
+//}
 
 @Composable
 fun StarDialog(

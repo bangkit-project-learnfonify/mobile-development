@@ -19,11 +19,19 @@ class CourseDetailViewModel(
         UiState.Loading)
     val uiState: StateFlow<UiState<DetailCourseItem>> get()  = _uiState
 
+    fun deleteToken(){
+        viewModelScope.launch {
+            courseRepository.removeSession()
+        }
+    }
+
     fun getCourseFromId(id: Int) {
         viewModelScope.launch {
             courseRepository.getCourseFromId(id)
                 .catch {
-                    _uiState.value = UiState.Error(it.message.toString())
+                    deleteToken()
+                    _uiState.value = UiState.Error("Error")
+
                 }
                 .collect{course ->
                     _uiState.value = UiState.Success(course)

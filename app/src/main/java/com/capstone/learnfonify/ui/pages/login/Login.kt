@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,12 +23,14 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,35 +54,41 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.capstone.learnfonify.data.ViewModelFactory
 import com.capstone.learnfonify.data.signin.SignInState
+import com.capstone.learnfonify.di.Injection
+import com.capstone.learnfonify.ui.pages.coursedetail.CourseDetailContent
+import com.capstone.learnfonify.ui.pages.home.HomeViewModel
 import com.capstone.learnfonify.ui.theme.LearnfonifyTheme
+import com.kyy47.kyyairlines.common.UiState
 
 @Composable
 fun LoginPage(
-    state: SignInState,
+    onRegisterClick: () -> Unit,
     onSignInClick: () -> Unit,
-    shareElement: @Composable () -> Unit
+    shareElement: @Composable () -> Unit,
+    onLoginWithEmailClick: (String, String) -> Unit
 ) {
-    LoginContent(state, onSignInClick, shareElement = shareElement)
+    LoginContent( onSignInClick, shareElement = shareElement,
+        onRegisterClick = onRegisterClick,
+        onLoginWithEmailClick = onLoginWithEmailClick)
 }
+
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginContent(
-    state: SignInState,
     onSignInClick: () -> Unit,
-    shareElement: @Composable () -> Unit
+    shareElement: @Composable () -> Unit,
+    onRegisterClick: () -> Unit,
+    onLoginWithEmailClick: (String, String) -> Unit
+
 ) {
-    val context = LocalContext.current
-    LaunchedEffect(key1 = state.signInError) {
-        state.signInError?.let { error ->
-            Toast.makeText(
-                context,
-                error,
-                Toast.LENGTH_LONG
-            ).show()
-        }
-    }
+
+
     var emailValue by remember {
         mutableStateOf("")
     }
@@ -181,7 +191,7 @@ fun LoginContent(
         }
         Button(
             onClick = {
-                onSignInClick()
+                onLoginWithEmailClick(emailValue, passwordValue)
             },
             shape = RoundedCornerShape(12.dp),
             contentPadding = PaddingValues(10.dp),
@@ -201,12 +211,30 @@ fun LoginContent(
                 ),
             )
         }
+        Text(
+            text = "or",
+            style = MaterialTheme.typography.labelLarge.copy(
+                fontWeight = FontWeight.Normal,
+            ),
+        )
+        Text(
+            text = "register",
+            style = MaterialTheme.typography.titleLarge.copy(
+                fontWeight = FontWeight.Bold,
+            ),
+            modifier = Modifier
+                .clickable { onRegisterClick() }
+        )
+
 
         Text(
             text = "or Continue With",
             style = MaterialTheme.typography.labelMedium.copy(
                 fontWeight = FontWeight.Normal,
-            ),
+            )
+            ,
+            modifier = Modifier
+                .padding(top = 24.dp)
         )
 
         Spacer(
@@ -215,15 +243,31 @@ fun LoginContent(
                 .size(10.dp)
         )
 
+
         Image(
             painter = painterResource(R.drawable.google), contentDescription = null,
             modifier = Modifier
                 .size(50.dp)
                 .clip(CircleShape)
-                .clickable { onSignInClick() },
+                .clickable { },
             contentScale = ContentScale.Crop
         )
 
     }
 
 }
+
+//@Preview(showBackground = true, device = Devices.PIXEL_4)
+//@Composable
+//fun LoginPagePrev() {
+//    LearnfonifyTheme {
+//        LoginContent(
+//            onSignInClick = { /*TODO*/ },
+//            onRegisterClick = {},
+//            shareElement = {},
+//            onLoginWithEmailClick = {
+//
+//            }
+//                )
+//    }
+//}

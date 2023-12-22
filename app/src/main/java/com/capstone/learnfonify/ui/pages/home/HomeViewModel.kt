@@ -22,26 +22,36 @@ class HomeViewModel(
       var listAllCourse: MutableList<List<CourseItem>> = mutableListOf()
 
 
+    fun deleteToken(){
+        viewModelScope.launch {
+            courseRepository.removeSession()
+        }
+    }
+
     fun getCoursesFromCategory(){
 
         viewModelScope.launch {
             val listCategory = courseRepository.getListCategory()
-            listCategory.map {
-                courseRepository.getCoursesFromCategory(it.category)
-                    .catch {
-                        _uiState.value = UiState.Error(it.message.toString())
-                    }
-                    .collect{courses ->
-                        if(courses != null){
-                            listAllCourse.add(courses)
-                            if (courses[0].category == listCategory[listCategory.lastIndex].category)  _uiState.value = UiState.Success(listAllCourse!!)
-                        }else{
-                            _uiState.value = UiState.Error("data is null")
+            if(!listCategory.isNullOrEmpty()){
+                listCategory.map {
+                    courseRepository.getCoursesFromCategory(it.category)
+                        .catch {
+                            _uiState.value = UiState.Error("Error")
+                        }
+                        .collect{courses ->
+                            if(!courses.isNullOrEmpty()){
+                                listAllCourse.add(courses)
+                                if (courses[0].category == listCategory[listCategory.lastIndex].category)  _uiState.value = UiState.Success(listAllCourse!!)
+                            }else{
+                                deleteToken()
+                                _uiState.value = UiState.Error("data is null")
+                            }
+
                         }
 
-                    }
-
+                }
             }
+
 
 
         }

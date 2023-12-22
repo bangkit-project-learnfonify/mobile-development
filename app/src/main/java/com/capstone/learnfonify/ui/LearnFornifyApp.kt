@@ -31,6 +31,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -67,11 +68,14 @@ import com.google.android.gms.auth.api.identity.Identity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.capstone.learnfonify.data.ViewModelFactory
 import com.capstone.learnfonify.ui.components.BottomBar
 import com.capstone.learnfonify.ui.components.DetailBar
 import com.capstone.learnfonify.ui.pages.coursedetail.CourseDetailPage
 import com.capstone.learnfonify.ui.pages.login.LoginPage
+import com.capstone.learnfonify.ui.pages.register.RegisterViewModel
 import com.capstone.learnfonify.ui.pages.splashscreen.LearnFornifySplashScreen
+import com.kyy47.kyyairlines.common.UiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -87,13 +91,8 @@ fun LearnFornifyApp(
     var tokenState by remember {
         mutableStateOf(null)
     }
+    val loginViewModel: LoginInViewModel = viewModel(factory = ViewModelFactory.getInstance(context))
 
-    val googleAuthUiClient by lazy {
-        GoogleAuthUiClient(
-            context = context,
-            oneTapClient = Identity.getSignInClient(context)
-        )
-    }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -104,6 +103,9 @@ fun LearnFornifyApp(
                 Screen.SplashLogin.route -> {}
                 Screen.DetailCourse.route -> {
                     DetailBar()
+                }
+                Screen.Register.route -> {
+
                 }
 
                 else -> BottomBar(navController = navController)
@@ -117,16 +119,9 @@ fun LearnFornifyApp(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Home.route) {
-                if (googleAuthUiClient.getSignedInUser() != null) HomePage(
-                    username = googleAuthUiClient.getSignedInUser()!!.username.toString(),
-                    urlProfile = googleAuthUiClient.getSignedInUser()!!.profilePictureUrl.toString(),
-                    onNagivateToDetail = { id ->
-
-                        navController.navigate(Screen.DetailCourse.createRoute(id))
-                    }
-                ) else HomePage(username = "Users", urlProfile = "", onNagivateToDetail = { id ->
+                HomePage(username = "Users", urlProfile = "", onNagivateToDetail = { id ->
                     navController.navigate(Screen.DetailCourse.createRoute(id))
-                })
+                }, context = context)
 
             }
             composable(Screen.Stored.route) {
@@ -137,14 +132,13 @@ fun LearnFornifyApp(
                 arguments = listOf(navArgument("courseId") { type = NavType.IntType })
             ) {
                 val id = it.arguments?.getInt("courseId") ?: 12
-                CourseDetailPage(courseId = id)
+                CourseDetailPage(courseId = id, context = context)
             }
             composable(Screen.Profile.route) {
                 ProfilePage(
                     onSignOut = {
-                        CoroutineScope(Dispatchers.Default).launch {
-                            googleAuthUiClient.signOut()
-                        }
+                        loginViewModel.deleteToken()
+
                         Toast.makeText(
                             context,
                             "Signed out",
@@ -155,63 +149,104 @@ fun LearnFornifyApp(
                 )
             }
             composable(Screen.SplashLogin.route) {
-                val viewModel = viewModel<LoginInViewModel>()
-                val state by viewModel.state.collectAsStateWithLifecycle()
-
-                LaunchedEffect(key1 = Unit) {
-                    if (googleAuthUiClient.getSignedInUser() != null) {
-
-                        navController.navigate(Screen.Profile.route)
-                    }
-                }
 
 
-                val launcher = rememberLauncherForActivityResult(
-                    contract = ActivityResultContracts.StartIntentSenderForResult(),
-                    onResult = { result ->
-                        if (result.resultCode == RESULT_OK) {
 
-                            CoroutineScope(Dispatchers.Default).launch {
-                                val signInResult = googleAuthUiClient.signInWithIntent(
-                                    intent = result.data ?: return@launch
-                                )
-                                viewModel.onLoginResult(signInResult)
-                            }
-                        }
+                loginViewModel.getIsAuthLogin()
 
+
+                LearnFornifySplashScreen(
+                    onRegisterClick = {
+                        navController.navigate(Screen.Register.route)
+                    },
+                    onSignInClick = { /*TODO*/ },
+                    onLoginWithEmailClick = {email, password ->
+                        loginViewModel.loginWithEmail(email,password)
                     }
                 )
 
+                loginViewModel.isLogin.collectAsState(
+                    initial = UiState.Loading
+                ).value.let { uiState ->
+                    when (uiState) {
+                        is UiState.Loading -> {
+                        }
 
-                LaunchedEffect(key1 = state.isSignInSuccessful) {
-                    if (state.isSignInSuccessful) {
-                        Toast.makeText(
-                            context,
-                            "Sign in successful",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        is UiState.Success -> {
+                            LaunchedEffect(key1 =  "error"){
+                                if(uiState.data){
+                                    navController.navigate(Screen.Home.route)
+                                }
+                            }
+                        }
 
-                        navController.navigate(Screen.Profile.route)
-                        viewModel.resetState()
+                        is UiState.Error -> {
+
+                        }
                     }
                 }
 
-                LearnFornifySplashScreen(state = state, onSignInClick = {
-                    CoroutineScope(Dispatchers.Default).launch {
-                        val signInIntentSender = googleAuthUiClient.signIn()
-                        launcher.launch(
-                            IntentSenderRequest.Builder(
-                                signInIntentSender ?: return@launch
-                            ).build()
-                        )
-                    }
+                loginViewModel.loginState.collectAsState(
+                    initial = UiState.Loading
+                ).value.let { uiState ->
+                    when (uiState) {
+                        is UiState.Loading -> {
 
-                })
+                        }
+
+                        is UiState.Success -> {
+                            Toast.makeText(context,"Login Success", Toast.LENGTH_SHORT).show()
+                            LaunchedEffect(key1 = uiState.data.email ){
+                                loginViewModel.setLoginState(UiState.Loading)
+                            }
+                            navController.navigate(Screen.Home.route)
+                        }
+
+                        is UiState.Error -> {
+                            Toast.makeText(context,"Login Failed", Toast.LENGTH_SHORT).show()
+                            LaunchedEffect(key1 =  "error"){
+                                loginViewModel.setLoginState(UiState.Loading)
+                            }
+                        }
+                    }
+                }
+
+
+
 
 
             }
             composable(Screen.Register.route) {
-                RegisterPage()
+                val registerViewModel: RegisterViewModel = viewModel(factory = ViewModelFactory.getInstance(context))
+
+                RegisterPage(onRegisterWithEmailClick = {username, email, password->
+                    registerViewModel.registerWithEmail(username, email, password, password)
+                })
+
+                registerViewModel.registerState.collectAsState(
+                    initial = UiState.Loading
+                ).value.let { uiState ->
+                    when (uiState) {
+                        is UiState.Loading -> {
+
+                        }
+
+                        is UiState.Success -> {
+                            Toast.makeText(context,"Register Success", Toast.LENGTH_SHORT).show()
+                            LaunchedEffect(key1 =  "error"){
+                                registerViewModel.setRegisterState(UiState.Loading)
+                            }
+                            navController.navigate(Screen.SplashLogin.route)
+                        }
+
+                        is UiState.Error -> {
+                            Toast.makeText(context,"Register Failed", Toast.LENGTH_SHORT).show()
+                            LaunchedEffect(key1 =  "error"){
+                                registerViewModel.setRegisterState(UiState.Loading)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -225,3 +260,4 @@ fun LearnFornifyAppPreview() {
         LearnFornifyApp()
     }
 }
+

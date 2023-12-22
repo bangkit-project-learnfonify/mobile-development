@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.capstone.learnfonify.R
 import com.capstone.learnfonify.data.response.CourseItem
 
@@ -80,11 +81,11 @@ fun MyListCourse(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Image(
-                            painter = painterResource(R.drawable.course_img),
-                            contentDescription = stringResource(R.string.setting),
+//
+                        AsyncImage(model = course.image,
+                            contentDescription = course.title,
                             modifier = Modifier
-                                .width(70.dp)
+                                .size(70.dp)
                                 .clip(RoundedCornerShape(8.dp)),
                             contentScale = ContentScale.Crop,
                         )

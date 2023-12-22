@@ -2,6 +2,7 @@ package com.capstone.learnfonify.ui.pages.register
 
 
 import android.R.style
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -46,13 +47,17 @@ import com.capstone.learnfonify.R
 import com.capstone.learnfonify.ui.theme.LearnfonifyTheme
 
 @Composable
-fun RegisterPage() {
-    RegisterContent()
+fun RegisterPage(
+    onRegisterWithEmailClick: (String, String, String) -> Unit,
+) {
+    RegisterContent(onRegisterWithEmailClick = onRegisterWithEmailClick)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterContent() {
+fun RegisterContent(
+    onRegisterWithEmailClick: (String, String, String) -> Unit,
+) {
     var emailValue by remember {
         mutableStateOf("")
     }
@@ -203,7 +208,7 @@ fun RegisterContent() {
         }
         Button(
             onClick = {
-                // clicked
+                onRegisterWithEmailClick(usernameValue, emailValue, passwordValue)
             },
             shape = RoundedCornerShape(12.dp),
             contentPadding = PaddingValues(10.dp),
@@ -253,7 +258,7 @@ fun RegisterContent() {
 @Composable
 fun RegisterPreview() {
     LearnfonifyTheme {
-        RegisterContent()
+//        RegisterContent()
     }
 
 }

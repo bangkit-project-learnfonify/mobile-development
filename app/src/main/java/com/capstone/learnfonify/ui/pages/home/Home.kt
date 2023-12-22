@@ -1,5 +1,6 @@
 package com.capstone.learnfonify.ui.pages.home
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -73,9 +74,10 @@ import com.kyy47.kyyairlines.common.UiState
 
 @Composable
 fun HomePage(
+    context: Context,
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = viewModel(
-        factory = ViewModelFactory(Injection.provideRepository())
+        factory = ViewModelFactory.getInstance(context)
     ),
     username: String,
     urlProfile: String,
@@ -280,13 +282,13 @@ fun HomeContent(
 
 }
 
-@Preview(showBackground = true, device = Devices.PIXEL_4)
-@Composable
-fun HomeContentPreview() {
-    LearnfonifyTheme {
-        HomePage(username = "Joni", urlProfile = "", onNagivateToDetail = {})
-    }
-}
+//@Preview(showBackground = true, device = Devices.PIXEL_4)
+//@Composable
+//fun HomeContentPreview() {
+//    LearnfonifyTheme {
+//        HomePage(username = "Joni", urlProfile = "", onNagivateToDetail = {})
+//    }
+//}
 
 
 

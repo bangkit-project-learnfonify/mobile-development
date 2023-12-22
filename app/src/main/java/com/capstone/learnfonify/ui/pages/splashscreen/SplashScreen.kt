@@ -47,8 +47,9 @@ import com.skydoves.orbital.rememberContentWithOrbitalScope
 
 @Composable
 fun LearnFornifySplashScreen(
-    state: SignInState,
-    onSignInClick: () -> Unit
+    onSignInClick: () -> Unit,
+    onRegisterClick: ()-> Unit,
+    onLoginWithEmailClick: (String, String) -> Unit
 ) {
     var isTransFormed by rememberSaveable {
         mutableStateOf(false)
@@ -83,7 +84,8 @@ fun LearnFornifySplashScreen(
     Orbital(
     ) {
         if (isTransFormed) {
-            LoginPage(state = state, onSignInClick = onSignInClick, shareElement = { shareImage() }
+            LoginPage(onSignInClick = onSignInClick, onRegisterClick =onRegisterClick, shareElement = { shareImage()}
+                , onLoginWithEmailClick = onLoginWithEmailClick
             )
         } else {
             Column(
