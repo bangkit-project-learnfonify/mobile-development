@@ -54,17 +54,18 @@ import com.capstone.learnfonify.data.signin.SignInState
 import com.capstone.learnfonify.ui.theme.LearnfonifyTheme
 
 @Composable
-fun LoginPage( state: SignInState,
-               onSignInClick: () -> Unit,
-               shareElement: @Composable () -> Unit
-               ) {
+fun LoginPage(
+    state: SignInState,
+    onSignInClick: () -> Unit,
+    shareElement: @Composable () -> Unit
+) {
     LoginContent(state, onSignInClick, shareElement = shareElement)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginContent(
-    state: SignInState ,
+    state: SignInState,
     onSignInClick: () -> Unit,
     shareElement: @Composable () -> Unit
 ) {
@@ -90,13 +91,6 @@ fun LoginContent(
             .padding(vertical = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-//        Image(painter = painterResource(R.drawable.login)
-//            , contentDescription = null,
-//            modifier = Modifier
-//                .size(200.dp)
-//                .clip(CircleShape),
-//            contentScale = ContentScale.Crop
-//        )
         shareElement()
         Text(
             text = "LearnFonify",
@@ -123,26 +117,26 @@ fun LoginContent(
             )
             OutlinedTextField(
                 value = emailValue,
-                onValueChange = {  emailValue = it},
-                label = { Text(
-                    text = "Enter Your Email",
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.Normal,
-                    ),
-                )},
+                onValueChange = { emailValue = it },
+                label = {
+                    Text(
+                        text = "Enter Your Email",
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Normal,
+                        ),
+                    )
+                },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 shape = RoundedCornerShape(20.dp),
                 modifier = Modifier
-                    .fillMaxWidth()
-                ,
+                    .fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.primary,
-                    ),
+                ),
 
 
-
-            )
+                )
         }
         Column(
             modifier = Modifier
@@ -160,31 +154,34 @@ fun LoginContent(
             )
             OutlinedTextField(
                 value = passwordValue,
-                onValueChange = {  passwordValue = it},
-                label = { Text(
-                    text = "Enter Your Password",
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.Normal,
+                onValueChange = { passwordValue = it },
+                label = {
+                    Text(
+                        text = "Enter Your Password",
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Normal,
 
-                    ),
-                )},
+                            ),
+                    )
+                },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 shape = RoundedCornerShape(20.dp),
                 modifier = Modifier
-                    .fillMaxWidth()
-                ,
+                    .fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.primary,
-                    ),
-                visualTransformation = if (passwordValue.trim().equals("")) VisualTransformation.None else PasswordVisualTransformation()
+                ),
+                visualTransformation = if (passwordValue.trim()
+                        .equals("")
+                ) VisualTransformation.None else PasswordVisualTransformation()
 
 
             )
         }
         Button(
             onClick = {
-                      onSignInClick()
+                onSignInClick()
             },
             shape = RoundedCornerShape(12.dp),
             contentPadding = PaddingValues(10.dp),
@@ -197,26 +194,29 @@ fun LoginContent(
                 .clipToBounds(),
         )
         {
-            Text(text = "Login",
+            Text(
+                text = "Login",
                 style = MaterialTheme.typography.titleSmall.copy(
                     fontWeight = FontWeight.Bold,
                 ),
-                )
+            )
         }
 
-        Text(text = "or Continue With",
+        Text(
+            text = "or Continue With",
             style = MaterialTheme.typography.labelMedium.copy(
                 fontWeight = FontWeight.Normal,
             ),
         )
 
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .size(10.dp)
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .size(10.dp)
         )
 
-        Image(painter = painterResource(R.drawable.google)
-            , contentDescription = null,
+        Image(
+            painter = painterResource(R.drawable.google), contentDescription = null,
             modifier = Modifier
                 .size(50.dp)
                 .clip(CircleShape)
@@ -227,12 +227,3 @@ fun LoginContent(
     }
 
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun LoginPreview() {
-//    LearnfonifyTheme {
-//        LoginPage()
-//    }
-//
-//}

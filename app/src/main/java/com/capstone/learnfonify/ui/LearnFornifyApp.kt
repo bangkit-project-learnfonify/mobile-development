@@ -67,6 +67,8 @@ import com.google.android.gms.auth.api.identity.Identity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.capstone.learnfonify.ui.components.BottomBar
+import com.capstone.learnfonify.ui.components.DetailBar
 import com.capstone.learnfonify.ui.pages.coursedetail.CourseDetailPage
 import com.capstone.learnfonify.ui.pages.login.LoginPage
 import com.capstone.learnfonify.ui.pages.splashscreen.LearnFornifySplashScreen
@@ -80,13 +82,13 @@ import kotlinx.coroutines.launch
 fun LearnFornifyApp(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-     context : Context = LocalContext.current
+    context: Context = LocalContext.current
 ) {
     var tokenState by remember {
         mutableStateOf(null)
     }
 
-     val googleAuthUiClient by lazy {
+    val googleAuthUiClient by lazy {
         GoogleAuthUiClient(
             context = context,
             oneTapClient = Identity.getSignInClient(context)
@@ -98,76 +100,78 @@ fun LearnFornifyApp(
 
     Scaffold(
         bottomBar = {
-            when(currentRoute){
+            when (currentRoute) {
                 Screen.SplashLogin.route -> {}
-                Screen.DetailCourse.route -> { DetailBar()}
-                else ->BottomBar(navController = navController)
+                Screen.DetailCourse.route -> {
+                    DetailBar()
+                }
+
+                else -> BottomBar(navController = navController)
             }
         },
         modifier = modifier
-    ) {innerPadding ->
+    ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = if(tokenState == null) Screen.SplashLogin.route else Screen.Home.route,
+            startDestination = if (tokenState == null) Screen.SplashLogin.route else Screen.Home.route,
             modifier = Modifier.padding(innerPadding)
-            ){
-            composable(Screen.Home.route){
-                if(googleAuthUiClient.getSignedInUser() != null) HomePage(
-                    username =  googleAuthUiClient.getSignedInUser()!!.username.toString(),
+        ) {
+            composable(Screen.Home.route) {
+                if (googleAuthUiClient.getSignedInUser() != null) HomePage(
+                    username = googleAuthUiClient.getSignedInUser()!!.username.toString(),
                     urlProfile = googleAuthUiClient.getSignedInUser()!!.profilePictureUrl.toString(),
-                    onNagivateToDetail = {id ->
+                    onNagivateToDetail = { id ->
 
                         navController.navigate(Screen.DetailCourse.createRoute(id))
                     }
-                    ) else HomePage(username = "Users", urlProfile = "", onNagivateToDetail = {id ->
+                ) else HomePage(username = "Users", urlProfile = "", onNagivateToDetail = { id ->
                     navController.navigate(Screen.DetailCourse.createRoute(id))
                 })
 
             }
-            composable(Screen.Stored.route){
-              StoredPage()
+            composable(Screen.Stored.route) {
+                StoredPage()
             }
             composable(
                 Screen.DetailCourse.route,
                 arguments = listOf(navArgument("courseId") { type = NavType.IntType })
-                ){
+            ) {
                 val id = it.arguments?.getInt("courseId") ?: 12
                 CourseDetailPage(courseId = id)
             }
-            composable(Screen.Profile.route){
-               ProfilePage(
-                   onSignOut = {
-                    CoroutineScope(Dispatchers.Default).launch {
-                    googleAuthUiClient.signOut()
-                   }
-                       Toast.makeText(
-                           context,
-                           "Signed out",
-                           Toast.LENGTH_LONG
-                       ).show()
-                       navController.popBackStack()
-               }
-               )
+            composable(Screen.Profile.route) {
+                ProfilePage(
+                    onSignOut = {
+                        CoroutineScope(Dispatchers.Default).launch {
+                            googleAuthUiClient.signOut()
+                        }
+                        Toast.makeText(
+                            context,
+                            "Signed out",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        navController.popBackStack()
+                    }
+                )
             }
-            composable(Screen.SplashLogin.route){
+            composable(Screen.SplashLogin.route) {
                 val viewModel = viewModel<LoginInViewModel>()
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
                 LaunchedEffect(key1 = Unit) {
-                    if(googleAuthUiClient.getSignedInUser() != null) {
+                    if (googleAuthUiClient.getSignedInUser() != null) {
 
-                         navController.navigate(Screen.Profile.route)
+                        navController.navigate(Screen.Profile.route)
                     }
                 }
-
 
 
                 val launcher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.StartIntentSenderForResult(),
                     onResult = { result ->
-                        if(result.resultCode == RESULT_OK) {
+                        if (result.resultCode == RESULT_OK) {
 
-                           CoroutineScope(Dispatchers.Default).launch {
+                            CoroutineScope(Dispatchers.Default).launch {
                                 val signInResult = googleAuthUiClient.signInWithIntent(
                                     intent = result.data ?: return@launch
                                 )
@@ -180,7 +184,7 @@ fun LearnFornifyApp(
 
 
                 LaunchedEffect(key1 = state.isSignInSuccessful) {
-                    if(state.isSignInSuccessful) {
+                    if (state.isSignInSuccessful) {
                         Toast.makeText(
                             context,
                             "Sign in successful",
@@ -206,7 +210,7 @@ fun LearnFornifyApp(
 
 
             }
-            composable(Screen.Register.route){
+            composable(Screen.Register.route) {
                 RegisterPage()
             }
         }
@@ -214,125 +218,10 @@ fun LearnFornifyApp(
 }
 
 
-
 @Preview(showBackground = true)
 @Composable
 fun LearnFornifyAppPreview() {
     LearnfonifyTheme {
         LearnFornifyApp()
-    }
-}
-
-@Composable
-fun BottomBar(
-    modifier: Modifier = Modifier,
-    navController: NavHostController
-) {
-
-    NavigationBar(
-        modifier = modifier
-    ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
-
-        val navigationItems = listOf(
-            NavigationItem(
-                title = stringResource(R.string.menu_home),
-                icon = Icons.Default.Home,
-                screen = Screen.Home
-            ),
-            NavigationItem(
-                title = stringResource(R.string.menu_stored),
-                icon = Icons.Default.List,
-                screen = Screen.Stored
-            ),
-            NavigationItem(
-                title = stringResource(R.string.menu_profile),
-                icon = Icons.Default.Person,
-                screen = Screen.Profile
-            ),
-        )
-        navigationItems.map {item ->
-        NavigationBarItem(
-            selected = item.screen.route == currentRoute,
-            onClick = {
-                navController.navigate(item.screen.route) {
-                    popUpTo(navController.graph.findStartDestination().id) {
-                        saveState = true
-                    }
-                    restoreState = true
-                    launchSingleTop = true
-                }
-            },
-            icon = {
-               Icon(
-                   imageVector = item.icon ,
-                   contentDescription = item.title)
-            },
-            label = { Text(text = item.title)}
-            )
-        }
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun BottomBarPreview() {
-    LearnfonifyTheme {
-        BottomBar(navController = rememberNavController())
-    }
-}
-
-@Composable
-fun DetailBar() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(24.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(painter = painterResource(id = R.drawable.share) ,
-        contentDescription = "share",
-        modifier = Modifier.size(59.dp)
-        )
-        Image(painter = painterResource(id = R.drawable.save) ,
-            contentDescription = "save",
-            modifier = Modifier.size(59.dp)
-        )
-        Button(
-            onClick = {
-            },
-            shape = RoundedCornerShape(12.dp),
-            contentPadding = PaddingValues(10.dp),
-            colors = ButtonDefaults.buttonColors(
-
-            ),
-            modifier = Modifier
-                .clipToBounds()
-                .weight(1f)
-            ,
-        )
-        {
-            Text(text = "Go To Course",
-                style = MaterialTheme.typography.titleSmall.copy(
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Cyan
-                ),
-                modifier = Modifier
-                    .padding(vertical = 6.dp, horizontal = 16.dp)
-            )
-        }
-
-    }
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DetailBarPreview() {
-    LearnfonifyTheme {
-        DetailBar()
     }
 }

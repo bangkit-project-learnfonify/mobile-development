@@ -1,7 +1,5 @@
 package com.capstone.learnfonify.ui.pages.coursedetail
 
-import android.app.Dialog
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,7 +11,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -44,9 +41,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Devices
@@ -60,7 +55,6 @@ import com.capstone.learnfonify.data.ViewModelFactory
 import com.capstone.learnfonify.data.response.DetailCourseItem
 import com.capstone.learnfonify.di.Injection
 import com.capstone.learnfonify.ui.components.RatingBar
-import com.capstone.learnfonify.ui.pages.home.MyListCourse
 import com.capstone.learnfonify.ui.theme.LearnfonifyTheme
 import com.kyy47.kyyairlines.common.UiState
 
@@ -73,18 +67,18 @@ fun CourseDetailPage(
 ) {
     detailViewModel.uiState.collectAsState(
         initial = UiState.Loading
-    ).value.let {uiState ->
-        when(uiState){
+    ).value.let { uiState ->
+        when (uiState) {
             is UiState.Loading -> {
                 detailViewModel.getCourseFromId(courseId)
-                Box(modifier =
-                Modifier
-                    .fillMaxHeight()
-                    .fillMaxHeight()
-                    .defaultMinSize(400.dp)
-                    ,
+                Box(
+                    modifier =
+                    Modifier
+                        .fillMaxHeight()
+                        .fillMaxHeight()
+                        .defaultMinSize(400.dp),
                     contentAlignment = Alignment.Center
-                ){
+                ) {
                     LinearProgressIndicator(
                         modifier = Modifier
                             .width(120.dp)
@@ -94,6 +88,7 @@ fun CourseDetailPage(
                 }
 
             }
+
             is UiState.Success -> {
                 CourseDetailContent(uiState.data)
             }
@@ -110,20 +105,24 @@ fun CourseDetailPage(
 fun CourseDetailContent(
     course: DetailCourseItem,
 ) {
-    var isDisplayModal by remember{
+    var isDisplayModal by remember {
+        mutableStateOf(false)
+    }
+    var isDoneGiveRating by remember {
         mutableStateOf(false)
     }
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .then(
-                if(!isDisplayModal){   Modifier.verticalScroll(rememberScrollState())}
-                else {
+                if (!isDisplayModal) {
+                    Modifier.verticalScroll(rememberScrollState())
+                } else {
                     Modifier.blur(radius = 8.dp)
                 }
             ),
 
-    ) {
+        ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -277,43 +276,47 @@ fun CourseDetailContent(
                             .padding(vertical = 10.dp)
                             .height(8.dp)
                     )
-                    Button(
-                        onClick = {
-                                  isDisplayModal = true
-                        },
-                        shape = RoundedCornerShape(12.dp),
-                        contentPadding = PaddingValues(10.dp),
-                        colors = ButtonDefaults.buttonColors(
+                    if (!isDoneGiveRating) {
+                        Button(
+                            onClick = {
+                                isDisplayModal = true
+                            },
+                            shape = RoundedCornerShape(12.dp),
+                            contentPadding = PaddingValues(10.dp),
+                            colors = ButtonDefaults.buttonColors(
 
-                        ),
-                        modifier = Modifier
-                            .clipToBounds()
-                            .padding(bottom = 24.dp)
-                        ,
-                    )
-                    {
-                        Text(text = "beri rating",
-                            style = MaterialTheme.typography.titleSmall.copy(
-                                fontWeight = FontWeight.Bold,
                             ),
                             modifier = Modifier
-                                .padding(vertical = 4.dp, horizontal = 8.dp)
+                                .clipToBounds()
+                                .padding(bottom = 24.dp),
                         )
+                        {
+                            Text(
+                                text = "beri rating",
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontWeight = FontWeight.Bold,
+                                ),
+                                modifier = Modifier
+                                    .padding(vertical = 4.dp, horizontal = 8.dp)
+                            )
+                        }
                     }
+
                 }
             }
         }
 
-        var rating by remember{
+        var rating by remember {
             mutableDoubleStateOf(0.0)
         }
-        if(isDisplayModal){
+        if (isDisplayModal) {
             StarDialog(
                 onDismissRequest = {
                     isDisplayModal = false
                 },
                 onConfirmation = {
                     isDisplayModal = false
+                    isDoneGiveRating = true
                 },
                 onRatingChange = {
                     rating = it
@@ -328,7 +331,7 @@ fun CourseDetailContent(
 
 @Preview(showBackground = true, device = Devices.PIXEL_4)
 @Composable
-fun CourseDetailPagePreview(){
+fun CourseDetailPagePreview() {
     LearnfonifyTheme {
         CourseDetailPage(courseId = 12)
     }
@@ -355,10 +358,8 @@ fun StarDialog(
                     .background(Color.White)
                     .padding(16.dp),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-                ,
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-
 
 
                 Text(
@@ -369,9 +370,10 @@ fun StarDialog(
                         color = Color.Black
                     )
                 )
-                RatingBar(modifier = Modifier
-                    .size(55.dp)
-                    .padding(top = 6.dp),
+                RatingBar(
+                    modifier = Modifier
+                        .size(55.dp)
+                        .padding(top = 6.dp),
                     rating = rating,
                     starsColor = Color.Green,
                     onRatingChange = onRatingChange
@@ -383,14 +385,16 @@ fun StarDialog(
                 ) {
                     TextButton(
                         onClick = { onDismissRequest() },
-                        modifier = Modifier.padding(8.dp)
+                        modifier = Modifier
+                            .padding(8.dp)
                             .background(Color.Red),
                     ) {
                         Text("Batal")
                     }
                     TextButton(
                         onClick = { onConfirmation() },
-                        modifier = Modifier.padding(8.dp)
+                        modifier = Modifier
+                            .padding(8.dp)
                             .background(Color.Cyan),
                     ) {
                         Text("Kirim")
@@ -399,6 +403,6 @@ fun StarDialog(
             }
 
 
-            }
         }
     }
+}

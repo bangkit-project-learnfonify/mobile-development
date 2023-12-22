@@ -70,8 +70,8 @@ fun RegisterContent() {
             .padding(vertical = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(painter = painterResource(R.drawable.register)
-            , contentDescription = null,
+        Image(
+            painter = painterResource(R.drawable.register), contentDescription = null,
             modifier = Modifier
                 .size(200.dp),
             contentScale = ContentScale.Crop
@@ -102,19 +102,20 @@ fun RegisterContent() {
             )
             OutlinedTextField(
                 value = usernameValue,
-                onValueChange = { usernameValue = it},
-                label = { Text(
-                    text = "Enter Your Username",
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.Normal,
-                    ),
-                )},
+                onValueChange = { usernameValue = it },
+                label = {
+                    Text(
+                        text = "Enter Your Username",
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Normal,
+                        ),
+                    )
+                },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 shape = RoundedCornerShape(20.dp),
                 modifier = Modifier
-                    .fillMaxWidth()
-                ,
+                    .fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.primary,
                 ),
@@ -138,19 +139,20 @@ fun RegisterContent() {
             )
             OutlinedTextField(
                 value = emailValue,
-                onValueChange = { emailValue =  it},
-                label = { Text(
-                    text = "Enter Your Email",
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.Normal,
-                    ),
-                )},
+                onValueChange = { emailValue = it },
+                label = {
+                    Text(
+                        text = "Enter Your Email",
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Normal,
+                        ),
+                    )
+                },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 shape = RoundedCornerShape(20.dp),
                 modifier = Modifier
-                    .fillMaxWidth()
-                ,
+                    .fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.primary,
                 ),
@@ -174,24 +176,27 @@ fun RegisterContent() {
             )
             OutlinedTextField(
                 value = passwordValue,
-                onValueChange = {  passwordValue = it},
-                label = { Text(
-                    text = "Enter Your Password",
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.Normal,
+                onValueChange = { passwordValue = it },
+                label = {
+                    Text(
+                        text = "Enter Your Password",
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Normal,
 
-                        ),
-                )},
+                            ),
+                    )
+                },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                 shape = RoundedCornerShape(20.dp),
                 modifier = Modifier
-                    .fillMaxWidth()
-                ,
+                    .fillMaxWidth(),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     unfocusedBorderColor = MaterialTheme.colorScheme.primary,
                 ),
-                visualTransformation = if (passwordValue.trim().equals("")) VisualTransformation.None else PasswordVisualTransformation()
+                visualTransformation = if (passwordValue.trim()
+                        .equals("")
+                ) VisualTransformation.None else PasswordVisualTransformation()
 
 
             )
@@ -211,26 +216,29 @@ fun RegisterContent() {
                 .clipToBounds(),
         )
         {
-            Text(text = "Register",
+            Text(
+                text = "Register",
                 style = MaterialTheme.typography.titleSmall.copy(
                     fontWeight = FontWeight.Bold,
                 ),
             )
         }
 
-        Text(text = "or Continue With",
+        Text(
+            text = "or Continue With",
             style = MaterialTheme.typography.labelMedium.copy(
                 fontWeight = FontWeight.Normal,
             ),
         )
 
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .size(10.dp)
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .size(10.dp)
         )
 
-        Image(painter = painterResource(R.drawable.google)
-            , contentDescription = null,
+        Image(
+            painter = painterResource(R.drawable.google), contentDescription = null,
             modifier = Modifier
                 .size(50.dp)
                 .clip(CircleShape),

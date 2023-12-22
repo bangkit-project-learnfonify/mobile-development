@@ -47,7 +47,7 @@ import com.skydoves.orbital.rememberContentWithOrbitalScope
 
 @Composable
 fun LearnFornifySplashScreen(
-        state: SignInState,
+    state: SignInState,
     onSignInClick: () -> Unit
 ) {
     var isTransFormed by rememberSaveable {
@@ -82,11 +82,10 @@ fun LearnFornifySplashScreen(
 
     Orbital(
     ) {
-        if(isTransFormed){
-            LoginPage(state =  state, onSignInClick =  onSignInClick
-            , shareElement = { shareImage() }
+        if (isTransFormed) {
+            LoginPage(state = state, onSignInClick = onSignInClick, shareElement = { shareImage() }
             )
-        }else{
+        } else {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -99,19 +98,22 @@ fun LearnFornifySplashScreen(
                 ) {
                     Column {
                         Row {
-                            Text(text = "Learn",
+                            Text(
+                                text = "Learn",
                                 style = MaterialTheme.typography.displayLarge.copy(
                                     fontWeight = FontWeight.Bold,
                                 ),
                             )
-                            Text(text = "Fonify",
+                            Text(
+                                text = "Fonify",
                                 style = MaterialTheme.typography.displayLarge.copy(
                                     fontWeight = FontWeight.Bold,
                                     color = Color.Cyan
                                 ),
                             )
                         }
-                        Text(text = "we provide, you decide",
+                        Text(
+                            text = "we provide, you decide",
                             style = MaterialTheme.typography.headlineSmall.copy(
                                 fontWeight = FontWeight.Normal,
                             ),
@@ -123,8 +125,6 @@ fun LearnFornifySplashScreen(
 
                 }
 
-
-
                 shareImage()
 
                 Column(
@@ -133,7 +133,8 @@ fun LearnFornifySplashScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(text = "Unleash your potential, now!",
+                    Text(
+                        text = "Unleash your potential, now!",
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Light,
                             textAlign = TextAlign.Center
@@ -152,11 +153,11 @@ fun LearnFornifySplashScreen(
                         ),
                         modifier = Modifier
                             .clipToBounds()
-                            .padding(bottom = 24.dp)
-                        ,
+                            .padding(bottom = 24.dp),
                     )
                     {
-                        Text(text = "Join Us",
+                        Text(
+                            text = "Join Us",
                             style = MaterialTheme.typography.titleSmall.copy(
                                 fontWeight = FontWeight.Bold,
                             ),
@@ -173,12 +174,3 @@ fun LearnFornifySplashScreen(
 
 
 }
-
-
-//@Preview(showBackground = true, device = Devices.PIXEL_4)
-//@Composable
-//fun LearnFornifySplashScreenPreview(){
-//    LearnfonifyTheme {
-//        LearnFornifySplashScreen()
-//    }
-//}

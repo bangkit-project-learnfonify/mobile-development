@@ -65,92 +65,99 @@ import com.capstone.learnfonify.data.ViewModelFactory
 import com.capstone.learnfonify.data.response.CategoryItem
 import com.capstone.learnfonify.data.response.CourseItem
 import com.capstone.learnfonify.di.Injection
+import com.capstone.learnfonify.ui.components.MyListCourse
+import com.capstone.learnfonify.ui.components.ProfileButton
 import com.capstone.learnfonify.ui.theme.LearnfonifyTheme
 import com.kyy47.kyyairlines.common.UiState
 
 
 @Composable
-fun HomePage
-            (modifier: Modifier = Modifier,
-             homeViewModel: HomeViewModel = viewModel(
-                 factory = ViewModelFactory(Injection.provideRepository())
-             ),
-             username: String,
-             urlProfile: String,
-             onNagivateToDetail: (Int) -> Unit
+fun HomePage(
+    modifier: Modifier = Modifier,
+    homeViewModel: HomeViewModel = viewModel(
+        factory = ViewModelFactory(Injection.provideRepository())
+    ),
+    username: String,
+    urlProfile: String,
+    onNagivateToDetail: (Int) -> Unit
 ) {
     HomeContent(
         homeViewModel = homeViewModel,
         username = username,
         urlProfile = urlProfile,
-        onNagivateToDetail =  onNagivateToDetail)
+        onNagivateToDetail = onNagivateToDetail
+    )
 }
 
 @Composable
-fun HomeContent(modifier: Modifier = Modifier,
-                homeViewModel: HomeViewModel,
-                username: String,
-                urlProfile: String,
-                onNagivateToDetail: (Int) -> Unit
+fun HomeContent(
+    modifier: Modifier = Modifier,
+    homeViewModel: HomeViewModel,
+    username: String,
+    urlProfile: String,
+    onNagivateToDetail: (Int) -> Unit
 ) {
-   Column(
-       modifier = Modifier
-           .padding(16.dp, top = 16.dp, bottom = 0.dp)
-           .fillMaxWidth()
-           .verticalScroll(rememberScrollState())
-   ) {
+    Column(
+        modifier = Modifier
+            .padding(16.dp, top = 16.dp, bottom = 0.dp)
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
+    ) {
 
-       Box(
-           modifier = Modifier
-               .fillMaxWidth()
-       ) {
-           Row(
-               modifier = Modifier
-                   .fillMaxWidth()
-                   .padding(end = 16.dp),
-               horizontalArrangement = Arrangement.End
-           ){
-               ProfileButton(urlProfile)
-           }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 16.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                ProfileButton(urlProfile)
+            }
 
-           Row(
-               Modifier.fillMaxWidth(),
-               horizontalArrangement = Arrangement.Center
-           )
-           {
+            Row(
+                Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            )
+            {
 
-               Text(text = "Learn",
-                   style = MaterialTheme.typography.headlineSmall.copy(
-                       fontWeight = FontWeight.Bold,
-                   ),
-               )
-               Text(text = "Fonify",
-                   style = MaterialTheme.typography.headlineSmall.copy(
-                       fontWeight = FontWeight.Bold,
-                       color = Color.Cyan
-                   ),
-               )
-           }
-       }
+                Text(
+                    text = "Learn",
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        fontWeight = FontWeight.Bold,
+                    ),
+                )
+                Text(
+                    text = "Fonify",
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Cyan
+                    ),
+                )
+            }
+        }
 
-       Text(
-           text = "Selamat pagi, $username!",
-           style = MaterialTheme.typography.labelMedium.copy(
-               fontWeight = FontWeight.Normal,
-               textAlign = TextAlign.Center,
-               color = Color.Black
-           ),
-           modifier = Modifier
-               .fillMaxWidth()
-       )
+        Text(
+            text = "Selamat pagi, $username!",
+            style = MaterialTheme.typography.labelMedium.copy(
+                fontWeight = FontWeight.Normal,
+                textAlign = TextAlign.Center,
+                color = Color.Black
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+        )
 
-       Image(painter = painterResource(R.drawable.carousel)
-           , contentDescription = stringResource(R.string.setting),
-           modifier = Modifier
-               .fillMaxWidth()
-               .padding(top = 20.dp, end = 16.dp),
-           contentScale = ContentScale.Crop,
-       )
+        Image(
+            painter = painterResource(R.drawable.carousel),
+            contentDescription = stringResource(R.string.setting),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 20.dp, end = 16.dp),
+            contentScale = ContentScale.Crop,
+        )
 
 
         LazyRow(
@@ -161,10 +168,11 @@ fun HomeContent(modifier: Modifier = Modifier,
             ),
             modifier = Modifier
                 .padding(top = 16.dp)
-        ){
-            items(DummyListMenu.dummyListMenu, key = {it.id}){
-                if (it.id != 2){
-                    OutlinedButton(onClick = { /*TODO*/ },
+        ) {
+            items(DummyListMenu.dummyListMenu, key = { it.id }) {
+                if (it.id != 2) {
+                    OutlinedButton(
+                        onClick = { /*TODO*/ },
                         border = BorderStroke(2.dp, Color.Cyan),
                         modifier = Modifier.defaultMinSize(minWidth = 50.dp)
                     ) {
@@ -180,48 +188,51 @@ fun HomeContent(modifier: Modifier = Modifier,
 
 
                     }
-                }else{
+                } else {
                     Button(
-               onClick = { /*TODO*/ },
-               colors = ButtonDefaults.buttonColors(
-                   containerColor = Color.Cyan,
-                   contentColor = Color.Black)
-           ) {
-               Text(
-                   text =  it.menu,
-                   style = MaterialTheme.typography.labelSmall.copy(
-                       fontWeight = FontWeight.SemiBold,
-                       textAlign = TextAlign.Start,
-                       color = Color.Black
-                   )
-               )
-           }
+                        onClick = { /*TODO*/ },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Cyan,
+                            contentColor = Color.Black
+                        )
+                    ) {
+                        Text(
+                            text = it.menu,
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontWeight = FontWeight.SemiBold,
+                                textAlign = TextAlign.Start,
+                                color = Color.Black
+                            )
+                        )
+                    }
                 }
 
             }
         }
-       homeViewModel.uiState.collectAsState(
-           initial = UiState.Loading
-       ).value.let {uiState ->
-           when(uiState){
-               is UiState.Loading -> {
-                   homeViewModel.getCoursesFromCategory()
-                   Box(modifier =
-                   Modifier
-                       .fillMaxHeight()
-                       .defaultMinSize(400.dp),
-                       contentAlignment = Alignment.Center
-                   ){
-                       LinearProgressIndicator(
-                           modifier = Modifier
-                               .width(120.dp)
-                               .padding(top = 24.dp),
-                           color = MaterialTheme.colorScheme.secondary,
-                       )
-                   }
+        homeViewModel.uiState.collectAsState(
+            initial = UiState.Loading
+        ).value.let { uiState ->
+            when (uiState) {
+                is UiState.Loading -> {
+                    homeViewModel.getCoursesFromCategory()
+                    Box(
+                        modifier =
+                        Modifier
+                            .fillMaxHeight()
+                            .defaultMinSize(400.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        LinearProgressIndicator(
+                            modifier = Modifier
+                                .width(120.dp)
+                                .padding(top = 24.dp),
+                            color = MaterialTheme.colorScheme.secondary,
+                        )
+                    }
 
-               }
-               is UiState.Success -> {
+                }
+
+                is UiState.Success -> {
 //                   LazyColumn(){
 //                       items(uiState.data, key = {}){
 //                           MyListCourse(
@@ -243,28 +254,29 @@ fun HomeContent(modifier: Modifier = Modifier,
                     }
 
 
+                }
 
+                is UiState.Error -> {
+                    Text(
+                        text = "Error when get data",
+                        style = MaterialTheme.typography.headlineSmall.copy(
+                            fontWeight = FontWeight.Normal,
+                            textAlign = TextAlign.Center
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 24.dp)
+                    )
+                }
+            }
+        }
+        Spacer(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(24.dp)
+        )
 
-                   }
-
-               is UiState.Error -> {
-                   Text(text = "Error when get data",
-                       style = MaterialTheme.typography.headlineSmall.copy(
-                           fontWeight = FontWeight.Normal,
-                           textAlign = TextAlign.Center
-                       ),
-                       modifier = Modifier
-                           .fillMaxWidth()
-                           .padding(top = 24.dp)
-                   )
-               }
-           }
-       }
-       Spacer(modifier = modifier
-           .fillMaxWidth()
-           .height(24.dp))
-
-   }
+    }
 
 }
 
@@ -277,127 +289,4 @@ fun HomeContentPreview() {
 }
 
 
-@Composable
-fun MyListCourse(
-    modifier: Modifier = Modifier
-        .padding(top = 24.dp),
-    courses: List<CourseItem>,
-    onNagivateToDetail: (Int) -> Unit
-) {
 
-    Column(
-        modifier = modifier
-    ) {
-        Text(
-            text = courses[0].category.toString(),
-            style = MaterialTheme.typography.titleMedium.copy(
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Start
-            )
-        )
-        LazyRow(
-            modifier = Modifier
-                .padding(top = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(
-                start = 8.dp,
-                end = 8.dp
-            ),
-        ) {
-
-            items(courses, key = { it.id}) {course ->
-
-                Box(
-                    modifier = Modifier
-                        .shadow(
-                            elevation = 10.dp,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .clip(RoundedCornerShape(24.dp))
-                        .background(Color.White)
-                        .size(196.dp)
-                        .padding(12.dp)
-                        .clickable { onNagivateToDetail(course.id) },
-                ) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Image(
-                            painter = painterResource(R.drawable.course_img),
-                            contentDescription = stringResource(R.string.setting),
-                            modifier = Modifier
-                                .width(70.dp)
-                                .clip(RoundedCornerShape(8.dp)),
-                            contentScale = ContentScale.Crop,
-                        )
-                        Text(
-                            text = course.title.toString(),
-                            style = MaterialTheme.typography.titleMedium.copy(
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center
-                            ),
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.padding(top = 6.dp)
-                        )
-                        Text(
-                            text = course.category.toString(),
-                            style = MaterialTheme.typography.labelSmall.copy(
-                                fontWeight = FontWeight.Light,
-                                textAlign = TextAlign.Center
-                            ),
-                            modifier = Modifier.padding(top = 3.dp)
-                        )
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxHeight(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.Bottom
-                        ) {
-                            Text(
-                                text = course.organizer.toString(),
-                                style = MaterialTheme.typography.labelSmall.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    textAlign = TextAlign.Start
-                                ),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier
-                                    .padding(top = 6.dp)
-                                    .width(70.dp)
-                            )
-                            Text(
-                                text = course.fee.toString(),
-                                style = MaterialTheme.typography.labelSmall.copy(
-                                    fontWeight = FontWeight.Light,
-                                    textAlign = TextAlign.Start
-                                ),
-
-                                )
-                        }
-                    }
-                }
-            }
-
-
-        }
-    }
-
-}
-
-
-
-@Composable
-fun ProfileButton(url: String) {
-
-        AsyncImage(model = url,
-            contentDescription = "Profile",
-            error = painterResource(R.drawable.google),
-            modifier = Modifier
-                .size(38.dp)
-                .clip(CircleShape)
-            )
-
-}
