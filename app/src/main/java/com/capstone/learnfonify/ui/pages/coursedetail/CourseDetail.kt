@@ -78,9 +78,8 @@ fun CourseDetailPage(
     courseId: Int,
 ) {
 
-    val isSaved =  remember {
-        mutableStateOf(true)
-    }
+
+
 
     detailViewModel.uiState.collectAsState(
         initial = UiState.Loading
@@ -110,12 +109,6 @@ fun CourseDetailPage(
                 CourseDetailContent(
                     uiState.data,
                     onInsertSavedCourse = {
-                        CoroutineScope(Dispatchers.Main).launch(
-                            Dispatchers.IO
-                        ) {
-                         isSaved.value = detailViewModel.checkSavedCourse(uiState.data.id ) != 0
-                        }
-
                         detailViewModel.insertToSavedCourse(
                             SavedCourseEntity(
                                uiState.data.id,
@@ -126,7 +119,11 @@ fun CourseDetailPage(
                         )
 
                     },
-                    isSaved.value
+                    onRemoveSavedCourse = {
+                        detailViewModel.removeSavedCourse(it)
+                    },
+                    detailViewModel,
+                    uiState.data.id
                     )
             }
 
@@ -142,7 +139,9 @@ fun CourseDetailPage(
 fun CourseDetailContent(
     course: DetailCourseItem,
     onInsertSavedCourse: () -> Unit,
-    isSaved: Boolean
+    onRemoveSavedCourse: (Int) ->Unit,
+    detailViewModel: CourseDetailViewModel,
+    id: Int
 ) {
     var isDisplayModal by remember {
         mutableStateOf(false)
@@ -151,7 +150,6 @@ fun CourseDetailContent(
         mutableStateOf(false)
     }
 
-    Log.d("LALALA", isSaved.toString())
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -215,6 +213,8 @@ fun CourseDetailContent(
                         .padding(horizontal = 24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+
+
                     Text(
                         text = course.title.toString(),
                         style = MaterialTheme.typography.headlineSmall.copy(
@@ -235,25 +235,37 @@ fun CourseDetailContent(
                             .padding(horizontal = 8.dp, vertical = 4.dp)
 
                     )
+                    if(!course.rating.isNullOrEmpty()){
+                        RatingBar(onRatingChange = {
+                        },
+                            rating = course.rating.toDouble(),
+                            starsColor = Color.Black
+                        )
+                    }
+
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 32.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text(
-                            text = course.fee.toString(),
-                            style = MaterialTheme.typography.labelSmall.copy(
-                                fontWeight = FontWeight.Normal,
-                                textAlign = TextAlign.Center,
-                                color = Color.White
-                            ),
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(16.dp))
-                                .background(Color.Magenta) // Set background color
-                                .border(1.dp, Color.Black) // Set border with thickness and color
-                                .padding(horizontal = 8.dp, vertical = 4.dp), //
-                        )
+                        if(!course.fee.isNullOrEmpty()){
+                            Text(
+                                text = course.fee.toString(),
+                                style = MaterialTheme.typography.labelSmall.copy(
+                                    fontWeight = FontWeight.Normal,
+                                    textAlign = TextAlign.Center,
+                                    color = Color.White
+                                ),
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(16.dp))
+                                    .background(Color.Magenta) // Set background color
+                                    .border(1.dp, Color.Black) // Set border with thickness and color
+                                    .padding(horizontal = 8.dp, vertical = 4.dp), //
+                            )
+                        }
+
                         Text(
                             text = "Kursus",
                             style = MaterialTheme.typography.labelSmall.copy(
@@ -289,13 +301,16 @@ fun CourseDetailContent(
                                 textAlign = TextAlign.Center
                             )
                         )
-                        Text(
-                            text = course.instructor.toString(),
-                            style = MaterialTheme.typography.labelMedium.copy(
-                                fontWeight = FontWeight.Normal,
-                                textAlign = TextAlign.Center
+                        if(!course.instructor.isNullOrEmpty()){
+                            Text(
+                                text = course.instructor.toString(),
+                                style = MaterialTheme.typography.labelMedium.copy(
+                                    fontWeight = FontWeight.Normal,
+                                    textAlign = TextAlign.Center
+                                )
                             )
-                        )
+                        }
+
                     }
                     Spacer(
                         modifier = Modifier
@@ -349,7 +364,11 @@ fun CourseDetailContent(
             }
         }
 
-        DetailBar(onInsertSavedCourse = onInsertSavedCourse, isSaved = isSaved)
+        DetailBar(onInsertSavedCourse = onInsertSavedCourse,
+            detailViewModel = detailViewModel,
+            id = id,
+            onRemoveSavedCourse = onRemoveSavedCourse
+            )
 
         var rating by remember {
             mutableDoubleStateOf(0.0)

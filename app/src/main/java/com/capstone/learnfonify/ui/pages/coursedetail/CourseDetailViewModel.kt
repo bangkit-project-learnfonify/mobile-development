@@ -7,6 +7,7 @@ import com.capstone.learnfonify.data.repository.CourseRepository
 import com.capstone.learnfonify.data.response.CourseItem
 import com.capstone.learnfonify.data.response.DetailCourseItem
 import com.kyy47.kyyairlines.common.UiState
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -21,6 +22,9 @@ class CourseDetailViewModel(
     val uiState: StateFlow<UiState<DetailCourseItem>> get()  = _uiState
 
 
+    private val _isSavedState: MutableStateFlow<UiState<Boolean>> = MutableStateFlow(
+        UiState.Loading)
+    val isSavedState: StateFlow<UiState<Boolean>> get()  = _isSavedState
 
 
 
@@ -39,8 +43,16 @@ class CourseDetailViewModel(
         courseRepository.removeSavedCourse(id)
     }
 
-    fun checkSavedCourse(id: Int): Int{
-        return courseRepository.checkSavedCourse(id)
+    fun checkSavedCourse(id: Int){
+        viewModelScope.launch {
+            courseRepository.checkSavedCourse(id)
+                .catch {
+                    _isSavedState.value = UiState.Error(it.message.toString())
+                }.collect{
+                    _isSavedState.value =  UiState.Success(it != 0)
+                }
+        }
+
     }
 
     fun getCourseFromId(id: Int) {

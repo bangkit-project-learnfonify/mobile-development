@@ -32,22 +32,25 @@ import com.kyy47.kyyairlines.common.UiState
 
 
 @Composable
-fun StoredPage(
+fun SavedPage(
     context: Context,
     savedViewModel: SavedViewModel = viewModel(
         factory = ViewModelFactory.getInstance(context)
-    )
+    ),
+    onNagivateToDetail: (Int) -> Unit
 ) {
-    StoredContent(
+    SavedContent(
         context = context,
-        savedViewModel = savedViewModel
+        savedViewModel = savedViewModel,
+        onNagivateToDetail = onNagivateToDetail
     )
 }
 
 @Composable
-fun StoredContent(
+fun SavedContent(
     context: Context,
-    savedViewModel: SavedViewModel
+    savedViewModel: SavedViewModel,
+    onNagivateToDetail: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -93,7 +96,7 @@ fun StoredContent(
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
                             items(uiState.data, key = {it.courseId}){
-                                MyCardSaved(it)
+                                MyCardSaved(it, onNagivateToDetail = onNagivateToDetail)
                             }
 
                         }

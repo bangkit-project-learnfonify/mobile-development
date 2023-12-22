@@ -33,7 +33,7 @@ class HomeViewModel(
         viewModelScope.launch {
             val listCategory = courseRepository.getListCategory()
             if(!listCategory.isNullOrEmpty()){
-                listCategory.map {
+                listCategory.forEach {
                     courseRepository.getCoursesFromCategory(it.category)
                         .catch {
                             _uiState.value = UiState.Error("Error")

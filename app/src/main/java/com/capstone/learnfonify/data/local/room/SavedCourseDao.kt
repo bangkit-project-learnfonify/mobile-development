@@ -16,7 +16,7 @@ interface SavedCourseDao{
     fun getSavedCourse(): Flow<List<SavedCourseEntity>>
 
     @Query("SELECT count(*) FROM saved_course WHERE course_id = :id")
-    fun checkCourse(id: Int ) : Int
+    fun checkCourse(id: Int ) : Flow<Int>
 
     @Query("DELETE FROM saved_course WHERE course_id =:id")
     fun removeCourse(id: Int)

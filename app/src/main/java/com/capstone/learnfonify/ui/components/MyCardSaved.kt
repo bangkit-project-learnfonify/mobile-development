@@ -2,6 +2,7 @@ package com.capstone.learnfonify.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,7 +36,10 @@ import com.capstone.learnfonify.data.local.entity.SavedCourseEntity
 import com.capstone.learnfonify.ui.theme.LearnfonifyTheme
 
 @Composable
-fun MyCardSaved(course: SavedCourseEntity) {
+fun MyCardSaved(
+    course: SavedCourseEntity,
+    onNagivateToDetail: (Int) -> Unit
+) {
     Box(
         modifier = Modifier
             .shadow(
@@ -45,7 +49,11 @@ fun MyCardSaved(course: SavedCourseEntity) {
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(Color.White)
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable {
+                       onNagivateToDetail(course.courseId)
+            }
+        ,
     ) {
         Row(
             modifier = Modifier

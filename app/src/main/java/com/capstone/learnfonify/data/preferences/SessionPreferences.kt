@@ -55,8 +55,7 @@ class SessionPreference private constructor(private val dataStore: DataStore<Pre
 
     suspend fun removeSession(){
         dataStore.edit {preferences->
-            preferences.remove(TOKEN_KEY)
-            preferences.remove(ID_USER)
+            preferences.clear()
         }
     }
 

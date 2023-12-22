@@ -126,14 +126,17 @@ fun MyListCourse(
                                     .padding(top = 6.dp)
                                     .width(70.dp)
                             )
-                            Text(
-                                text = course.fee.toString(),
-                                style = MaterialTheme.typography.labelSmall.copy(
-                                    fontWeight = FontWeight.Light,
-                                    textAlign = TextAlign.Start
-                                ),
+                            if(course.fee != null){
+                                Text(
+                                    text = course.fee.toString(),
+                                    style = MaterialTheme.typography.labelSmall.copy(
+                                        fontWeight = FontWeight.Light,
+                                        textAlign = TextAlign.Start
+                                    ),
 
-                                )
+                                    )
+                            }
+
                         }
                     }
                 }

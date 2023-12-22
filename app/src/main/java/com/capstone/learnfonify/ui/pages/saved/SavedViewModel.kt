@@ -24,7 +24,7 @@ class SavedViewModel( private val courseRepository: CourseRepository
         courseRepository.insert(course)
     }
 
-    fun checkCourse(id: Int):Int{
+    fun checkCourse(id: Int):Flow<Int>{
        return courseRepository.checkSavedCourse(id)
     }
 

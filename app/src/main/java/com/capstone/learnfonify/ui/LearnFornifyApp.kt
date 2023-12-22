@@ -1,6 +1,7 @@
 package com.capstone.learnfonify.ui
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,7 +20,6 @@ import androidx.navigation.compose.rememberNavController
 import com.capstone.learnfonify.ui.navigation.Screen
 import com.capstone.learnfonify.ui.pages.home.HomePage
 import com.capstone.learnfonify.ui.pages.profile.ProfilePage
-import com.capstone.learnfonify.ui.pages.saved.StoredPage
 import com.capstone.learnfonify.ui.theme.LearnfonifyTheme
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +35,8 @@ import com.capstone.learnfonify.ui.components.BottomBar
 import com.capstone.learnfonify.ui.components.DetailBar
 import com.capstone.learnfonify.ui.pages.coursedetail.CourseDetailPage
 import com.capstone.learnfonify.ui.pages.register.RegisterViewModel
+import com.capstone.learnfonify.ui.pages.saved.SavedContent
+import com.capstone.learnfonify.ui.pages.saved.SavedPage
 import com.capstone.learnfonify.ui.pages.splashscreen.LearnFornifySplashScreen
 import com.kyy47.kyyairlines.common.UiState
 
@@ -81,7 +83,12 @@ fun LearnFornifyApp(
 
             }
             composable(Screen.Saved.route) {
-                StoredPage(context)
+                SavedPage(
+                    context,
+                    onNagivateToDetail = {id ->
+                        navController.navigate(Screen.DetailCourse.createRoute(id))
+                    }
+                    )
             }
             composable(
                 Screen.DetailCourse.route,
@@ -91,17 +98,12 @@ fun LearnFornifyApp(
                 CourseDetailPage(courseId = id, context = context)
             }
             composable(Screen.Profile.route) {
-                ProfilePage(
-                    onSignOut = {
-                        loginViewModel.deleteToken()
 
-                        Toast.makeText(
-                            context,
-                            "Signed out",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        navController.popBackStack()
-                    }
+                val userId =  loginViewModel.getUserIdSession()
+                ProfilePage(
+                    navController = navController,
+                    id = userId,
+                    context = context
                 )
             }
             composable(Screen.SplashLogin.route) {

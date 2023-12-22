@@ -11,6 +11,7 @@ import com.capstone.learnfonify.data.response.DetailCourseItem
 import com.capstone.learnfonify.data.response.ListCategory
 import com.capstone.learnfonify.data.response.LoginWithEmailReponse
 import com.capstone.learnfonify.data.response.RegisterWithEmailResponse
+import com.capstone.learnfonify.data.response.UserFromIdItem
 import com.capstone.learnfonify.data.retrofit.ApiConfig
 import com.capstone.learnfonify.data.retrofit.ApiService
 import kotlinx.coroutines.CoroutineScope
@@ -34,12 +35,19 @@ class CourseRepository( private val apiService: ApiService,
         pref.saveTokenSession(token, userId)
     }
 
-    suspend fun removeSession(){
-        pref.removeSession()
+    fun removeSession(){
+        coroutineScope.launch(Dispatchers.IO) {
+            pref.removeSession()
+        }
+
     }
 
      fun getUserIdSession() : Int{
         return pref.getIdUser()
+    }
+
+    suspend fun getUserFormId(id: Int): Flow<UserFromIdItem>{
+       return flowOf( apiService.getUserFromId(id).data[0])
     }
 
 
@@ -91,7 +99,7 @@ class CourseRepository( private val apiService: ApiService,
         return mSavedCourseDao.getSavedCourse()
     }
 
-    fun checkSavedCourse(id: Int): Int{
+    fun checkSavedCourse(id: Int): Flow<Int>{
             return mSavedCourseDao.checkCourse(id)
     }
 

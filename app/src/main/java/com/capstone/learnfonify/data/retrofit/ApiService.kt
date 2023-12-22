@@ -5,6 +5,7 @@ import com.capstone.learnfonify.data.response.CourseFromId
 import com.capstone.learnfonify.data.response.ListCategory
 import com.capstone.learnfonify.data.response.LoginWithEmailReponse
 import com.capstone.learnfonify.data.response.RegisterWithEmailResponse
+import com.capstone.learnfonify.data.response.UserFromId
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -42,4 +43,10 @@ interface ApiService {
         @Field("password") password: String,
         @Field("confirmPassword") confirmPassword: String
     ): RegisterWithEmailResponse
+
+    @GET("user-id/{userId}")
+    suspend fun getUserFromId(
+        @Path("userId") userId: Int
+    ): UserFromId
+
 }

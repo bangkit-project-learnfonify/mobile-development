@@ -14,6 +14,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -22,13 +25,37 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.capstone.learnfonify.R
+import com.capstone.learnfonify.ui.pages.coursedetail.CourseDetailViewModel
+import com.kyy47.kyyairlines.common.UiState
 
 
 @Composable
 fun DetailBar(
     onInsertSavedCourse: () -> Unit,
-    isSaved: Boolean
+    detailViewModel: CourseDetailViewModel,
+    id: Int,
+    onRemoveSavedCourse: (Int) ->Unit
               ) {
+
+    val isSaved = remember {
+        mutableStateOf(false)
+    }
+
+    detailViewModel.isSavedState.collectAsState(
+        initial = UiState.Loading
+    ).value.let { uiState ->
+        when (uiState) {
+            is UiState.Loading -> {
+                detailViewModel.checkSavedCourse(id)
+            }
+
+            is UiState.Success -> {
+                isSaved.value = uiState.data
+            }
+            is UiState.Error -> {
+            }
+        }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -37,11 +64,17 @@ fun DetailBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = if(isSaved)   painterResource(R.drawable.saved) else  painterResource(R.drawable.not_saved),
+            painter = if(isSaved.value)   painterResource(R.drawable.saved) else  painterResource(R.drawable.not_saved),
             contentDescription = "save",
-            modifier = Modifier.size(59.dp)
+            modifier = Modifier
+                .size(46.dp)
                 .clickable {
-                    onInsertSavedCourse()
+                    if(isSaved.value){
+                        onRemoveSavedCourse(id)
+                    }else{
+                        onInsertSavedCourse()
+                    }
+
                 }
         )
 
@@ -79,6 +112,7 @@ fun DetailBar(
 
     }
 
+}
 }
 
 //@Preview(showBackground = true)
