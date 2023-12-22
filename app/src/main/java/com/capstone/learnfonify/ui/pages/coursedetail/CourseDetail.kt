@@ -355,7 +355,7 @@ fun CourseDetailContent(
                                     fontWeight = FontWeight.Bold,
                                 ),
                                 modifier = Modifier
-                                    .padding(vertical = 4.dp, horizontal = 8.dp)
+                                    .padding( horizontal = 8.dp)
                             )
                         }
                     }

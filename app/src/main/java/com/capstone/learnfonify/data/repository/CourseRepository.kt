@@ -2,17 +2,13 @@ package com.capstone.learnfonify.data.repository
 
 import com.capstone.learnfonify.data.local.entity.SavedCourseEntity
 import com.capstone.learnfonify.data.local.room.SavedCourseDao
-import com.capstone.learnfonify.data.local.room.SavedCourseDatabase
 import com.capstone.learnfonify.data.preferences.SessionPreference
 import com.capstone.learnfonify.data.response.CategoryItem
-import com.capstone.learnfonify.data.response.CourseFromId
 import com.capstone.learnfonify.data.response.CourseItem
 import com.capstone.learnfonify.data.response.DetailCourseItem
-import com.capstone.learnfonify.data.response.ListCategory
 import com.capstone.learnfonify.data.response.LoginWithEmailReponse
 import com.capstone.learnfonify.data.response.RegisterWithEmailResponse
 import com.capstone.learnfonify.data.response.UserFromIdItem
-import com.capstone.learnfonify.data.retrofit.ApiConfig
 import com.capstone.learnfonify.data.retrofit.ApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -64,8 +60,12 @@ class CourseRepository( private val apiService: ApiService,
         return apiService.getListCategory().data
     }
 
-    suspend fun getCoursesFromCategory( category: String?): Flow<List<CourseItem>?>{
+    suspend fun getCoursesFromCategory( category: String?): Flow<List<CourseItem>>{
         return flowOf(apiService.getCoursesFromCategory(category).data)
+    }
+
+    suspend fun getTopCourse(idUser: Int): Flow<List<CourseItem>>{
+        return flowOf(apiService.getTopCourse(idUser))
     }
 
     suspend fun getCourseFromId(id: Int): Flow<DetailCourseItem>{

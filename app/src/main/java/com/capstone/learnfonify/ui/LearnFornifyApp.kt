@@ -1,5 +1,6 @@
 package com.capstone.learnfonify.ui
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
@@ -34,6 +35,8 @@ import com.capstone.learnfonify.data.ViewModelFactory
 import com.capstone.learnfonify.ui.components.BottomBar
 import com.capstone.learnfonify.ui.components.DetailBar
 import com.capstone.learnfonify.ui.pages.coursedetail.CourseDetailPage
+import com.capstone.learnfonify.ui.pages.more.MoreContent
+import com.capstone.learnfonify.ui.pages.more.MorePage
 import com.capstone.learnfonify.ui.pages.register.RegisterViewModel
 import com.capstone.learnfonify.ui.pages.saved.SavedContent
 import com.capstone.learnfonify.ui.pages.saved.SavedPage
@@ -41,6 +44,7 @@ import com.capstone.learnfonify.ui.pages.splashscreen.LearnFornifySplashScreen
 import com.kyy47.kyyairlines.common.UiState
 
 
+@SuppressLint("SuspiciousIndentation")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LearnFornifyApp(
@@ -65,6 +69,9 @@ fun LearnFornifyApp(
                 }
                 Screen.Register.route -> {
                 }
+                Screen.More.route -> {
+
+                }
 
                 else -> BottomBar(navController = navController)
             }
@@ -77,9 +84,14 @@ fun LearnFornifyApp(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Home.route) {
-                HomePage(username = "Users", urlProfile = "", onNagivateToDetail = { id ->
+                HomePage(username = "Users", urlProfile = "",
+                    onNagivateToDetail = { id ->
                     navController.navigate(Screen.DetailCourse.createRoute(id))
-                }, context = context)
+                    },
+                    context = context,
+                    onNagivateToMore = {categoryCourse ->
+                        navController.navigate(Screen.More.createRoute(categoryCourse))
+                    })
 
             }
             composable(Screen.Saved.route) {
@@ -90,6 +102,20 @@ fun LearnFornifyApp(
                     }
                     )
             }
+
+            composable(
+                Screen.More.route,
+                arguments = listOf(navArgument("categoryCourses") { type = NavType.StringType })
+                ){
+                var categoryCourses = it.arguments?.getString("categoryCourses") ?: "Digital Marketing"
+
+                    MorePage(context = context,
+                        onNavigateToDetail = {id ->
+                            navController.navigate(Screen.DetailCourse.createRoute(id))
+                        },
+                        categoryCourses = categoryCourses)
+            }
+
             composable(
                 Screen.DetailCourse.route,
                 arguments = listOf(navArgument("courseId") { type = NavType.IntType })
@@ -97,6 +123,7 @@ fun LearnFornifyApp(
                 val id = it.arguments?.getInt("courseId") ?: 12
                 CourseDetailPage(courseId = id, context = context)
             }
+
             composable(Screen.Profile.route) {
 
                 val userId =  loginViewModel.getUserIdSession()
@@ -154,7 +181,7 @@ fun LearnFornifyApp(
                         }
 
                         is UiState.Success -> {
-                            Toast.makeText(context,"Login Success", Toast.LENGTH_SHORT).show()
+
                             LaunchedEffect(key1 = uiState.data.email ){
                                 loginViewModel.setLoginState(UiState.Loading)
                             }

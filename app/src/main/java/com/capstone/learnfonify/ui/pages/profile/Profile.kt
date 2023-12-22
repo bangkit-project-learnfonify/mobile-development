@@ -1,6 +1,8 @@
 package com.capstone.learnfonify.ui.pages.profile
 
 import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -60,14 +62,17 @@ fun ProfilePage(
     ).value.let { uiState ->
         when (uiState) {
             is UiState.Loading -> {
+
                 profileViewModel.getUserFromId(id)
             }
 
             is UiState.Success -> {
+                Log.d("USERRRRR",uiState.data.toString())
                 ProfileContent(
                    onSignOut= {
 
                     profileViewModel.deleteToken()
+                       Toast.makeText(context,"Sign Out Success", Toast.LENGTH_SHORT).show()
                        navController.navigate(Screen.SplashLogin.route)
 
                     },

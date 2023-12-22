@@ -81,13 +81,15 @@ fun HomePage(
     ),
     username: String,
     urlProfile: String,
-    onNagivateToDetail: (Int) -> Unit
+    onNagivateToDetail: (Int) -> Unit,
+    onNagivateToMore: (String) -> Unit
 ) {
     HomeContent(
         homeViewModel = homeViewModel,
         username = username,
         urlProfile = urlProfile,
-        onNagivateToDetail = onNagivateToDetail
+        onNagivateToDetail = onNagivateToDetail,
+        onNagivateToMore = onNagivateToMore
     )
 }
 
@@ -97,8 +99,11 @@ fun HomeContent(
     homeViewModel: HomeViewModel,
     username: String,
     urlProfile: String,
-    onNagivateToDetail: (Int) -> Unit
+    onNagivateToDetail: (Int) -> Unit,
+    onNagivateToMore: (String) -> Unit
 ) {
+
+    val USERIDDUMMY = 1
     Column(
         modifier = Modifier
             .padding(16.dp, top = 16.dp, bottom = 0.dp)
@@ -211,6 +216,31 @@ fun HomeContent(
 
             }
         }
+
+
+        homeViewModel.topCourseState.collectAsState(
+            initial = UiState.Loading
+        ).value.let { uiState ->
+            when (uiState) {
+                is UiState.Loading -> {
+                    homeViewModel.getTopCourses(USERIDDUMMY)
+                }
+
+                is UiState.Success -> {
+                    MyListCourse(
+                        courses = uiState.data,
+                        onNagivateToDetail = onNagivateToDetail,
+                        onNagivateToMore = onNagivateToMore,
+                        titleList = "Top Courses"
+                    )
+                }
+
+                is UiState.Error -> {
+                }
+            }
+        }
+
+
         homeViewModel.uiState.collectAsState(
             initial = UiState.Loading
         ).value.let { uiState ->
@@ -219,7 +249,7 @@ fun HomeContent(
                     homeViewModel.getCoursesFromCategory()
                     Box(
                         modifier =
-                        Modifier
+                            Modifier
                             .fillMaxHeight()
                             .defaultMinSize(400.dp),
                         contentAlignment = Alignment.Center
@@ -235,23 +265,13 @@ fun HomeContent(
                 }
 
                 is UiState.Success -> {
-//                   LazyColumn(){
-//                       items(uiState.data, key = {}){
-//                           MyListCourse(
-//                            courses = it,
-//                            modifier = Modifier
-//                                .padding(top = 24.dp),
-//                            onNagivateToDetail = onNagivateToDetail
-//                        )
-//                       }
-//                   }
-
                     uiState.data.map {
                         MyListCourse(
                             courses = it,
                             modifier = Modifier
                                 .padding(top = 24.dp),
-                            onNagivateToDetail = onNagivateToDetail
+                            onNagivateToDetail = onNagivateToDetail,
+                            onNagivateToMore = onNagivateToMore,
                         )
                     }
 
@@ -279,8 +299,10 @@ fun HomeContent(
         )
 
     }
-
 }
+
+
+
 
 //@Preview(showBackground = true, device = Devices.PIXEL_4)
 //@Composable

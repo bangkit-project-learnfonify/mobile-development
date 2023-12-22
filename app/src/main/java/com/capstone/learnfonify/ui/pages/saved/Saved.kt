@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.capstone.learnfonify.data.ViewModelFactory
-import com.capstone.learnfonify.ui.components.MyCardSaved
+import com.capstone.learnfonify.ui.components.MyCardCourse
 import com.capstone.learnfonify.ui.pages.home.HomeViewModel
 import com.kyy47.kyyairlines.common.UiState
 
@@ -96,7 +96,7 @@ fun SavedContent(
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
                             items(uiState.data, key = {it.courseId}){
-                                MyCardSaved(it, onNagivateToDetail = onNagivateToDetail)
+                                MyCardCourse(it, onNagivateToDetail = onNagivateToDetail)
                             }
 
                         }

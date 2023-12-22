@@ -8,20 +8,28 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowRight
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -39,20 +47,64 @@ import com.capstone.learnfonify.data.response.CourseItem
 fun MyListCourse(
     modifier: Modifier = Modifier
         .padding(top = 24.dp),
-    courses: List<CourseItem>,
-    onNagivateToDetail: (Int) -> Unit
+    courses: List<CourseItem> ,
+    onNagivateToDetail: (Int) -> Unit,
+    onNagivateToMore: (String) -> Unit,
+    titleList: String = courses[0].category.toString(),
 ) {
 
     Column(
         modifier = modifier
     ) {
-        Text(
-            text = courses[0].category.toString(),
-            style = MaterialTheme.typography.titleMedium.copy(
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Start
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = titleList,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Start
+                )
             )
-        )
+            Button(
+                onClick = {
+                          onNagivateToMore(titleList)
+                },
+                shape = RoundedCornerShape(12.dp),
+                contentPadding = PaddingValues(10.dp),
+                colors = ButtonDefaults.buttonColors(
+
+                ),
+                modifier = Modifier
+                    .clipToBounds()
+                    .padding(horizontal = 16.dp),
+            )
+            {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Semua",
+                        style = MaterialTheme.typography.titleSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                        modifier = Modifier
+                            .padding( horizontal = 8.dp)
+                    )
+                    Spacer(modifier = Modifier
+                    )
+                    Icon(imageVector = Icons.Rounded.ArrowRight, contentDescription = "All",
+                        modifier = Modifier
+                            .size(26.dp))
+                }
+
+            }
+        }
+
         LazyRow(
             modifier = Modifier
                 .padding(top = 16.dp),
@@ -81,7 +133,7 @@ fun MyListCourse(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-//
+
                         AsyncImage(model = course.image,
                             contentDescription = course.title,
                             modifier = Modifier
@@ -144,6 +196,7 @@ fun MyListCourse(
 
 
         }
+
+    }
     }
 
-}

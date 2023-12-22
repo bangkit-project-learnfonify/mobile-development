@@ -2,6 +2,7 @@ package com.capstone.learnfonify.data.retrofit
 
 import com.capstone.learnfonify.data.response.CourseFromCategory
 import com.capstone.learnfonify.data.response.CourseFromId
+import com.capstone.learnfonify.data.response.CourseItem
 import com.capstone.learnfonify.data.response.ListCategory
 import com.capstone.learnfonify.data.response.LoginWithEmailReponse
 import com.capstone.learnfonify.data.response.RegisterWithEmailResponse
@@ -48,5 +49,10 @@ interface ApiService {
     suspend fun getUserFromId(
         @Path("userId") userId: Int
     ): UserFromId
+
+    @GET("top-courses/{userId}")
+    suspend fun getTopCourse(
+        @Path("userId") userId: Int
+    ): List<CourseItem>
 
 }
