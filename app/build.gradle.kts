@@ -87,4 +87,7 @@ dependencies {
 //    orbital
     implementation("com.github.skydoves:orbital:0.3.3")
 
+//    Extended Icons
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+
 }

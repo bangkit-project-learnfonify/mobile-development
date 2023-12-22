@@ -222,25 +222,25 @@ fun HomeContent(modifier: Modifier = Modifier,
 
                }
                is UiState.Success -> {
-                   LazyColumn(){
-                       items(uiState.data, key = {}){
-                           MyListCourse(
-                            courses = it,
-                            modifier = Modifier
-                                .padding(top = 24.dp),
-                            onNagivateToDetail = onNagivateToDetail
-                        )
-                       }
-                   }
-
-//                    uiState.data.map {
-//                        MyListCourse(
+//                   LazyColumn(){
+//                       items(uiState.data, key = {}){
+//                           MyListCourse(
 //                            courses = it,
 //                            modifier = Modifier
 //                                .padding(top = 24.dp),
 //                            onNagivateToDetail = onNagivateToDetail
 //                        )
-//                    }
+//                       }
+//                   }
+
+                    uiState.data.map {
+                        MyListCourse(
+                            courses = it,
+                            modifier = Modifier
+                                .padding(top = 24.dp),
+                            onNagivateToDetail = onNagivateToDetail
+                        )
+                    }
 
 
 
