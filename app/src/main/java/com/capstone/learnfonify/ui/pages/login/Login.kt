@@ -4,12 +4,17 @@ package com.capstone.learnfonify.ui.pages.login
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -37,10 +42,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import com.capstone.learnfonify.data.signin.SignInState
+import com.capstone.learnfonify.ui.theme.LearnfonifyTheme
 
 @Composable
 fun LoginPage( state: SignInState,
@@ -221,3 +232,114 @@ fun LoginContent(
 //    }
 //
 //}
+
+@Composable
+fun LearnFornifySplashScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 42.dp)
+
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column {
+                Row {
+                    Text(text = "Learn",
+                        style = MaterialTheme.typography.displayLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                        ),
+                    )
+                    Text(text = "Fonify",
+                        style = MaterialTheme.typography.displayLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Cyan
+                        ),
+                    )
+                }
+                Text(text = "we provide, you decide",
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        fontWeight = FontWeight.Normal,
+                    ),
+
+                )
+
+            }
+
+
+        }
+
+
+            Image(
+                painter = painterResource(R.drawable.login),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(475.dp)
+                    .padding(top = 24.dp)
+                    .graphicsLayer {
+                        this.translationX = -100.dp.toPx()
+                    },
+
+
+            )
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "Unleash your potential, now!",
+                style = MaterialTheme.typography.titleLarge.copy(
+                    fontWeight = FontWeight.Light,
+                    textAlign = TextAlign.Center
+                ),
+                modifier = Modifier
+                    .fillMaxWidth(),
+            )
+            Button(
+                onClick = {
+
+                },
+                shape = RoundedCornerShape(12.dp),
+                contentPadding = PaddingValues(10.dp),
+                colors = ButtonDefaults.buttonColors(
+
+                ),
+                modifier = Modifier
+                    .clipToBounds()
+                    .padding(bottom = 24.dp)
+                ,
+            )
+            {
+                Text(text = "Join Us",
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontWeight = FontWeight.Bold,
+                    ),
+                    modifier = Modifier
+                        .padding(vertical = 6.dp, horizontal = 16.dp)
+                )
+            }
+        }
+
+
+
+
+
+
+
+
+
+    }
+}
+
+
+@Preview(showBackground = true, device = Devices.PIXEL_4)
+@Composable
+fun LearnFornifySplashScreenPreview(){
+    LearnfonifyTheme {
+        LearnFornifySplashScreen()
+    }
+}

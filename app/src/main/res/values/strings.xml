@@ -5,4 +5,7 @@
     <string name="menu_stored">Stored</string>
     <string name="menu_profile">Profile</string>
     <string name="web_client_id">512900470804-j1ucq0shun2cqrj7lu0f3up1v5fc8gc2.apps.googleusercontent.com</string>
+    <string name="learnfornify">LearnFornify</string>
+    <string name="setting">setting</string>
+    <string name="list_anda_sukai">Yang Mungkin Anda Sukai</string>
 </resources>
