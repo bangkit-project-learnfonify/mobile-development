@@ -55,15 +55,18 @@ import com.capstone.learnfonify.ui.theme.LearnfonifyTheme
 
 @Composable
 fun LoginPage( state: SignInState,
-               onSignInClick: () -> Unit) {
-    LoginContent(state, onSignInClick)
+               onSignInClick: () -> Unit,
+               shareElement: @Composable () -> Unit
+               ) {
+    LoginContent(state, onSignInClick, shareElement = shareElement)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginContent(
     state: SignInState ,
-    onSignInClick: () -> Unit
+    onSignInClick: () -> Unit,
+    shareElement: @Composable () -> Unit
 ) {
     val context = LocalContext.current
     LaunchedEffect(key1 = state.signInError) {
@@ -87,13 +90,14 @@ fun LoginContent(
             .padding(vertical = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(painter = painterResource(R.drawable.login)
-            , contentDescription = null,
-            modifier = Modifier
-                .size(200.dp)
-                .clip(CircleShape),
-            contentScale = ContentScale.Crop
-        )
+//        Image(painter = painterResource(R.drawable.login)
+//            , contentDescription = null,
+//            modifier = Modifier
+//                .size(200.dp)
+//                .clip(CircleShape),
+//            contentScale = ContentScale.Crop
+//        )
+        shareElement()
         Text(
             text = "LearnFonify",
             style = MaterialTheme.typography.headlineSmall.copy(
@@ -232,114 +236,3 @@ fun LoginContent(
 //    }
 //
 //}
-
-@Composable
-fun LearnFornifySplashScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 42.dp)
-
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column {
-                Row {
-                    Text(text = "Learn",
-                        style = MaterialTheme.typography.displayLarge.copy(
-                            fontWeight = FontWeight.Bold,
-                        ),
-                    )
-                    Text(text = "Fonify",
-                        style = MaterialTheme.typography.displayLarge.copy(
-                            fontWeight = FontWeight.Bold,
-                            color = Color.Cyan
-                        ),
-                    )
-                }
-                Text(text = "we provide, you decide",
-                    style = MaterialTheme.typography.headlineSmall.copy(
-                        fontWeight = FontWeight.Normal,
-                    ),
-
-                )
-
-            }
-
-
-        }
-
-
-            Image(
-                painter = painterResource(R.drawable.login),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(475.dp)
-                    .padding(top = 24.dp)
-                    .graphicsLayer {
-                        this.translationX = -100.dp.toPx()
-                    },
-
-
-            )
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = "Unleash your potential, now!",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.Light,
-                    textAlign = TextAlign.Center
-                ),
-                modifier = Modifier
-                    .fillMaxWidth(),
-            )
-            Button(
-                onClick = {
-
-                },
-                shape = RoundedCornerShape(12.dp),
-                contentPadding = PaddingValues(10.dp),
-                colors = ButtonDefaults.buttonColors(
-
-                ),
-                modifier = Modifier
-                    .clipToBounds()
-                    .padding(bottom = 24.dp)
-                ,
-            )
-            {
-                Text(text = "Join Us",
-                    style = MaterialTheme.typography.titleSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                    ),
-                    modifier = Modifier
-                        .padding(vertical = 6.dp, horizontal = 16.dp)
-                )
-            }
-        }
-
-
-
-
-
-
-
-
-
-    }
-}
-
-
-@Preview(showBackground = true, device = Devices.PIXEL_4)
-@Composable
-fun LearnFornifySplashScreenPreview(){
-    LearnfonifyTheme {
-        LearnFornifySplashScreen()
-    }
-}

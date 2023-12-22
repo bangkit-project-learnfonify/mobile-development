@@ -2,6 +2,7 @@ package com.capstone.learnfonify.ui
 
 import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
@@ -48,6 +49,7 @@ import com.capstone.learnfonify.ui.pages.register.RegisterPage
 import com.google.android.gms.auth.api.identity.Identity
 import androidx.lifecycle.lifecycleScope
 import com.capstone.learnfonify.ui.pages.login.LoginPage
+import com.capstone.learnfonify.ui.pages.splashscreen.LearnFornifySplashScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -76,13 +78,13 @@ fun LearnFornifyApp(
 
     Scaffold(
         bottomBar = {
-            if(currentRoute != Screen.Login.route)  BottomBar(navController = navController)
+            if(currentRoute != Screen.SplashLogin.route )  BottomBar(navController = navController)
         },
         modifier = modifier
     ) {innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = if(tokenState == null) Screen.Login.route else Screen.Home.route,
+            startDestination = if(tokenState == null) Screen.SplashLogin.route else Screen.Home.route,
             modifier = Modifier.padding(innerPadding)
             ){
             composable(Screen.Home.route){
@@ -105,15 +107,19 @@ fun LearnFornifyApp(
                        navController.popBackStack()
                })
             }
-            composable(Screen.Login.route){
+            composable(Screen.SplashLogin.route){
                 val viewModel = viewModel<LoginInViewModel>()
                 val state by viewModel.state.collectAsStateWithLifecycle()
 
                 LaunchedEffect(key1 = Unit) {
                     if(googleAuthUiClient.getSignedInUser() != null) {
+
                         navController.navigate("profile")
+                        Log.d("LOL", (googleAuthUiClient.getSignedInUser()!!.username.toString()))
                     }
                 }
+
+
 
                 val launcher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.StartIntentSenderForResult(),
@@ -144,8 +150,8 @@ fun LearnFornifyApp(
                         viewModel.resetState()
                     }
                 }
-                
-                LoginPage(state = state, onSignInClick = {
+
+                LearnFornifySplashScreen(state = state, onSignInClick = {
                     CoroutineScope(Dispatchers.Default).launch {
                         val signInIntentSender = googleAuthUiClient.signIn()
                         launcher.launch(
@@ -154,6 +160,7 @@ fun LearnFornifyApp(
                             ).build()
                         )
                     }
+
                 })
 
 

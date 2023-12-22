@@ -85,6 +85,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
 
 //    orbital
-    
+    implementation("com.github.skydoves:orbital:0.3.3")
 
 }

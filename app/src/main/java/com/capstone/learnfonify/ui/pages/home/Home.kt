@@ -78,31 +78,33 @@ fun HomeContent(modifier: Modifier = Modifier,
            .verticalScroll(rememberScrollState())
    ) {
        Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-           verticalAlignment = Alignment.CenterVertically,
-           modifier = Modifier.fillMaxWidth(),
+           Modifier.fillMaxWidth(),
+           horizontalArrangement = Arrangement.Center
        ) {
-           Text(
-               text = stringResource(R.string.learnfornify),
+           Text(text = "Learn",
                style = MaterialTheme.typography.headlineSmall.copy(
                    fontWeight = FontWeight.Bold,
-                   textAlign = TextAlign.Start
-               )
+               ),
            )
-           Button(
-               onClick = { /*TODO*/ },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent,
-                    contentColor = Color.Transparent)
-               ) {
-               Image(painter = painterResource(R.drawable.setting_icon)
-                   , contentDescription = stringResource(R.string.setting),
-                   modifier = Modifier
-                       .size(35.dp),
-                   contentScale = ContentScale.Crop
-               )
-           }
+           Text(text = "Fonify",
+               style = MaterialTheme.typography.headlineSmall.copy(
+                   fontWeight = FontWeight.Bold,
+                   color = Color.Cyan
+               ),
+           )
        }
+       Text(
+           text = "Selamat pagi, Anna!",
+           style = MaterialTheme.typography.labelSmall.copy(
+               fontWeight = FontWeight.Normal,
+               textAlign = TextAlign.Center,
+               color = Color.Black
+           ),
+           modifier = Modifier
+               .fillMaxWidth()
+               .padding(top = 6.dp)
+       )
+
        Image(painter = painterResource(R.drawable.carousel)
            , contentDescription = stringResource(R.string.setting),
            modifier = Modifier
